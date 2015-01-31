@@ -7,12 +7,12 @@ public class Game extends StateBasedGame {
 	public final static String gamename = "Icy Tower";
 	
 	public final static int menu = 0;
-	
+	public final static int play = 1;
 	
 	public Game(String gamename){
 		super(gamename);
 		this.addState(new Menu(menu));		
-		
+		this.addState(new Level_One(play));
 	}
 	
 	public void initStatesList ( GameContainer gc) throws SlickException {

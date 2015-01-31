@@ -6,8 +6,7 @@ import org.newdawn.slick.state.*;
 public class Menu extends BasicGameState{
 
 	Image backGround;
-	Image startButton;
-	Image exitButton;
+	
 	
 	int MouseX, MouseY;
 	
