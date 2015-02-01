@@ -25,6 +25,8 @@ public class Level_One extends BasicGameState {
 	boolean onCloud = false;
 	boolean inAir = false;
 	boolean falling = false;
+	
+	int score;
 
 	public Level_One(int state) {
 
@@ -76,7 +78,11 @@ public class Level_One extends BasicGameState {
 		Cloud.draw(CloudX - 200, CloudY);
 		Cloud.draw(CloudX + 200, CloudY);
 		charCurrent.draw(charPositionX, charPositionY);
-
+		
+	}
+	
+	public void drawScore (Graphics g) {
+		g.drawString("score " + score, 50, 600);
 	}
 
 	@SuppressWarnings("static-access")
