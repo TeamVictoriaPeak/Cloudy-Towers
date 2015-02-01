@@ -19,10 +19,12 @@ public class Level_One extends BasicGameState {
 	float charPositionJump;
 
 	Image background, Cloud;
-	int CloudX = 300, CloudY = 300;
-	int EarthX = 400;
+	float CloudX = 300, CloudY = 300;
+	float EarthY = 450;
 	boolean onEarth = true;
 	boolean onCloud = false;
+	boolean inAir = false;
+	boolean falling = false;
 
 	public Level_One(int state) {
 
@@ -81,7 +83,12 @@ public class Level_One extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame sbg, int g)
 			throws SlickException {
 		Input input = gc.getInput();
-		if((onEarth == true || onCloud == true)&&(charCurrent!=charJumpRight&&charCurrent!=charJumpLeft))
+				
+		HeroOnEarth();
+		// HeroOnCloud();
+		
+		
+		if((onEarth == true || onCloud == true)&&(charCurrent!=charJumpRight&&charCurrent!=charJumpLeft) && !falling)
 		{
 			if(input.isKeyDown(input.KEY_RIGHT)&&charPositionX<744)
 			{
@@ -105,42 +112,73 @@ public class Level_One extends BasicGameState {
 			{
 				charCurrent=charJumpRight;
 				charPositionJump = charPositionY-100;
+				inAir = true;
 			}
 			if(input.isKeyDown(input.KEY_SPACE)&&(charCurrent==charStillLeft||charCurrent==charMoveLeft))
 			{
 				charCurrent=charJumpLeft;
 				charPositionJump = charPositionY-100;
+				inAir = true;
 			}
 		}
 		else
 		{
-			if(input.isKeyDown(input.KEY_RIGHT)&&(charPositionY>=charPositionJump))
+			if (charPositionY <= charPositionJump) {
+				falling = true;
+				inAir = false;
+			}
+			if(input.isKeyDown(input.KEY_RIGHT)&&(charPositionY>=charPositionJump) && inAir)
 			{
 				charCurrent=charJumpRight;
 				charPositionX+=g*0.5;
 				charPositionY-=g*0.5;
 			}
-			if(input.isKeyDown(input.KEY_LEFT)&&(charPositionY>=charPositionJump))
+			if(input.isKeyDown(input.KEY_LEFT)&&(charPositionY>=charPositionJump) && inAir)
 			{
 				charCurrent=charJumpLeft;
 				charPositionX-=g*0.5;
 				charPositionY-=g*0.5;
 			}
-			if(charPositionY>=charPositionJump)
+			if(charPositionY>=charPositionJump  && inAir)
 			{
 				charPositionY-=g*0.5;
 			}
+			
+			
+			
+			if (falling) {
+				if (charCurrent == charJumpLeft) {
+					charPositionX -= g*0.5;
+					charPositionY += g*0.5;
+				}
+				
+				if (charCurrent == charJumpRight) {
+					charPositionX += g*0.5;
+					charPositionY += g*0.5;
+				}
+			}
+			
 		}
 	}
 
-	private void Earth() {
+	private void HeroOnEarth() {
 
-		if (charPositionY > EarthX) {
+		if (charPositionY > EarthY) {
 			onEarth = false;
 		}
 
-		if (charPositionY == EarthX) {
+		if (charPositionY >= EarthY) {
 			onEarth = true;
+
+			if (falling && charCurrent == charJumpRight) {
+				charCurrent = charStillRight;
+				falling = false;
+			}
+			
+			if (falling && charCurrent == charJumpLeft) {
+				charCurrent = charStillLeft;
+				falling = false;
+			}
 		}
 
 	}
@@ -150,6 +188,9 @@ public class Level_One extends BasicGameState {
 		if (charPositionY == CloudY
 				&& (charPositionX > CloudX && charPositionX < CloudX + 96)) {
 			onCloud = true;
+			falling = false;
+			inAir = false;
+			
 		} else {
 			onCloud = false;
 		}
