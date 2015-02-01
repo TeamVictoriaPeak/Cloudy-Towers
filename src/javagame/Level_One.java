@@ -137,7 +137,7 @@ public class Level_One extends BasicGameState {
 				charCurrent = charJumpRight;
 				charPositionX += g * 0.5;
 				charPositionY -= g * 0.3;
-			} else if (!(input.isKeyDown(input.KEY_RIGHT))
+			} else if ((!(input.isKeyDown(input.KEY_RIGHT))||charPositionX>=744)
 					&& (charPositionY >= charPositionJump) && inAir
 					&& charCurrent == charJumpRight) {
 				charCurrent = charJumpRight;
@@ -149,7 +149,7 @@ public class Level_One extends BasicGameState {
 				charCurrent = charJumpLeft;
 				charPositionX -= g * 0.5;
 				charPositionY -= g * 0.3;
-			} else if (!(input.isKeyDown(input.KEY_LEFT))
+			} else if ((!(input.isKeyDown(input.KEY_LEFT))||charPositionX<=0)
 					&& (charPositionY >= charPositionJump) && inAir
 					&& charCurrent == charJumpLeft) {
 				charCurrent = charJumpLeft;
@@ -168,12 +168,12 @@ public class Level_One extends BasicGameState {
 					charPositionX -= g * 0.5;
 					charPositionY += g * 0.3;
 				}
-				if (charCurrent == charFallRight
-						&& !(input.isKeyDown(input.KEY_RIGHT))) {
+				if ((charCurrent == charFallRight
+						&& !(input.isKeyDown(input.KEY_RIGHT)))||charPositionX>=744) {
 					charPositionY += g * 0.3;
 				}
-				if (charCurrent == charFallLeft
-						&& !(input.isKeyDown(input.KEY_LEFT))) {
+				if ((charCurrent == charFallLeft
+						&& !(input.isKeyDown(input.KEY_LEFT)))||charPositionX<=0) {
 					charPositionY += g * 0.3;
 				}
 			}
