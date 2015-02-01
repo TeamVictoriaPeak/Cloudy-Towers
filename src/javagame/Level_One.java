@@ -63,7 +63,7 @@ public class Level_One extends BasicGameState {
 		charStillLeft = new Animation(stillLeft, 150);
 		charFallRight = new Animation(fallRight, 150);
 		charFallLeft = new Animation(fallLeft, 150);
-		charCurrent = new Animation(stillRight, 150);
+		charCurrent = charStillRight;
 
 		background = new Image("res/background.jpg");
 		Cloud = new Image("res/cloud.png");
@@ -111,13 +111,13 @@ public class Level_One extends BasicGameState {
 			if(input.isKeyDown(input.KEY_SPACE)&&(charCurrent==charStillRight||charCurrent==charMoveRight))
 			{
 				charCurrent=charJumpRight;
-				charPositionJump = charPositionY-100;
+				charPositionJump = charPositionY-400;
 				inAir = true;
 			}
 			if(input.isKeyDown(input.KEY_SPACE)&&(charCurrent==charStillLeft||charCurrent==charMoveLeft))
 			{
 				charCurrent=charJumpLeft;
-				charPositionJump = charPositionY-100;
+				charPositionJump = charPositionY-400;
 				inAir = true;
 			}
 		}
@@ -127,34 +127,50 @@ public class Level_One extends BasicGameState {
 				falling = true;
 				inAir = false;
 			}
-			if(input.isKeyDown(input.KEY_RIGHT)&&(charPositionY>=charPositionJump) && inAir)
+			if(input.isKeyDown(input.KEY_RIGHT)&&(charPositionY>=charPositionJump) && inAir && charPositionX<744)
 			{
 				charCurrent=charJumpRight;
 				charPositionX+=g*0.5;
-				charPositionY-=g*0.5;
+				charPositionY-=g*0.3;
 			}
-			if(input.isKeyDown(input.KEY_LEFT)&&(charPositionY>=charPositionJump) && inAir)
+			else if(!(input.isKeyDown(input.KEY_RIGHT))&&(charPositionY>=charPositionJump) && inAir && charCurrent==charJumpRight)
+			{
+				charCurrent=charJumpRight;
+				charPositionY-=g*0.3;
+			}
+			if(input.isKeyDown(input.KEY_LEFT)&&(charPositionY>=charPositionJump) && inAir&&charPositionX>0)
 			{
 				charCurrent=charJumpLeft;
 				charPositionX-=g*0.5;
-				charPositionY-=g*0.5;
+				charPositionY-=g*0.3;
 			}
-			if(charPositionY>=charPositionJump  && inAir)
+			else if(!(input.isKeyDown(input.KEY_LEFT))&&(charPositionY>=charPositionJump) && inAir && charCurrent==charJumpLeft)
 			{
-				charPositionY-=g*0.5;
+				charCurrent=charJumpLeft;
+				charPositionY-=g*0.3;
 			}
 			
 			
 			
 			if (falling) {
-				if (charCurrent == charJumpLeft) {
-					charPositionX -= g*0.5;
-					charPositionY += g*0.5;
+				if (input.isKeyDown(input.KEY_RIGHT)&&charPositionX<744) {
+					charCurrent=charFallRight;
+					charPositionX += g*0.5;
+					charPositionY += g*0.3;
 				}
 				
-				if (charCurrent == charJumpRight) {
-					charPositionX += g*0.5;
-					charPositionY += g*0.5;
+				if (input.isKeyDown(input.KEY_LEFT)&&charPositionX>0) {
+					charCurrent=charFallLeft;
+					charPositionX -= g*0.5;
+					charPositionY += g*0.3;
+				}
+				if(charCurrent==charFallRight&&!(input.isKeyDown(input.KEY_RIGHT)))
+				{
+					charPositionY += g*0.3;
+				}
+				if(charCurrent==charFallLeft&&!(input.isKeyDown(input.KEY_LEFT)))
+				{
+					charPositionY += g*0.3;
 				}
 			}
 			
