@@ -10,6 +10,7 @@ public class Game extends StateBasedGame {
 	public final static int play = 1;
 	public final static int instructions = 2;
 	
+	
 	public Game(String gamename){
 		super(gamename);
 		this.addState(new Menu(menu));		

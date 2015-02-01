@@ -7,6 +7,7 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
 
@@ -17,7 +18,9 @@ public class Menu extends BasicGameState{
 	Image playGame;
 	Image instructions;
 	Image exitGame;
+	Image logo;
 	UnicodeFont uFont;
+	private Music music;
 	
 	int MouseX, MouseY;
 	
@@ -40,9 +43,12 @@ public class Menu extends BasicGameState{
 		playGame = new Image("res/Button-Play-icon.png");
 		instructions = new Image("res/Button-Help-icon.png");
 		exitGame = new Image("res/symbol-delete-icon.png");
+		logo = new Image("res/cloudytower.png");
 		Font font = new Font("Serif",Font.PLAIN,20);
 		uFont = new UnicodeFont(font, font.getSize(),font.isBold(), font.isItalic());
-	
+		music = new Music("res/Happy_Background_Music_-_Sweet_by_Sophonic.wav");
+		music.setVolume(0.5f);
+		music.play();
 		
 	}
 
@@ -54,13 +60,13 @@ public class Menu extends BasicGameState{
 		//g.setFont(uFont);
 		g.setColor(Color.darkGray);
 		backGround.draw();
-		g.drawString("Main Menu", 340, 10);
-		playGame.draw(30,130);
-		g.drawString("Play Game",90, 145);
-		instructions.draw(30,230);
-		g.drawString("Instructions",90 , 245);
-		exitGame.draw(30,330);
-		g.drawString("Exit Game",90,345);
+		logo.draw(10, 30);
+		playGame.draw(30,330);
+		g.drawString("Play Game",90, 345);
+		instructions.draw(30,430);
+		g.drawString("Instructions",90 , 445);
+		exitGame.draw(30,530);
+		g.drawString("Exit Game",90,545);
 		
 	}
 
@@ -71,19 +77,20 @@ public class Menu extends BasicGameState{
 		int posX = Mouse.getX();
 		int posY = Mouse.getY();
 		// button Play Game
-		if ((posX > 35) && (posX < 75) && ((posY > 420) && (posY < 470 ))){
+		if ((posX > 35) && (posX < 75) && ((posY > 220) && (posY < 270 ))){
 			if (Mouse.isButtonDown(0)) {
+				music.stop();
 				sbg.enterState(1);
 			}
 		}
 		// button Instructions
-		if ((posX > 35) && (posX < 75) && ((posY > 320) && (posY < 370 ))){
+		if ((posX > 35) && (posX < 75) && ((posY > 120) && (posY < 170 ))){
 			if (Mouse.isButtonDown(0)) {
 				sbg.enterState(2);
 			}
 		}
 		// button Exit Game
-		if ((posX > 45) && (posX < 65) && ((posY > 235) && (posY < 255 ))){
+		if ((posX > 45) && (posX < 65) && ((posY > 35) && (posY < 55 ))){
 			if (Mouse.isButtonDown(0)) {
 				System.exit(0);
 			}
