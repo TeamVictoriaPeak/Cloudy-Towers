@@ -131,22 +131,21 @@ public class Level_One extends BasicGameState {
 		HeroOnEarth();
 		// HeroOnCloud();
 		//������� ���� ������ �� ������ �� ������ ��� ��.
-		if ((onEarth == true || onCloud == true)
-				//�������� ������ ������ � �� ������
+		if ((onEarth == true || onCloud == true)//Анимации когато героят е на земята
 				&& (charCurrent != charJumpRight && charCurrent != charJumpLeft)
 				&& !falling) {
 			if (input.isKeyDown(input.KEY_RIGHT) && charPositionX < 744) {
 				charCurrent = charMoveRight;
 				charPositionX += g * 0.5;
 			} else if (charCurrent == charMoveRight
-					&& !(input.isKeyDown(input.KEY_RIGHT))) {
+					&& (!(input.isKeyDown(input.KEY_RIGHT))||charPositionX>=744)) {
 				charCurrent = charStillRight;
 			}
 			if (input.isKeyDown(input.KEY_LEFT) && charPositionX > 0) {
 				charCurrent = charMoveLeft;
 				charPositionX -= g * 0.5;
 			} else if (charCurrent == charMoveLeft
-					&& !(input.isKeyDown(input.KEY_LEFT))) {
+					&& (!(input.isKeyDown(input.KEY_LEFT))||charPositionX<=0)) {
 				charCurrent = charStillLeft;
 			}
 			if (input.isKeyDown(input.KEY_SPACE)
