@@ -1,6 +1,7 @@
 package javagame;
 
 import org.lwjgl.input.Mouse;
+
 import java.awt.Font;
 
 import org.newdawn.slick.*;
@@ -42,7 +43,7 @@ public class Menu extends BasicGameState{
 		backGround = new Image("res/Sky_Background.jpg");
 		playGame = new Image("res/Button-Play-icon.png");
 		instructions = new Image("res/Button-Help-icon.png");
-		exitGame = new Image("res/symbol-delete-icon.png");
+		exitGame = new Image("res/Button-Close-icon.png");
 		logo = new Image("res/cloudytower.png");
 		Font font = new Font("Serif",Font.PLAIN,20);
 		uFont = new UnicodeFont(font, font.getSize(),font.isBold(), font.isItalic());
@@ -90,7 +91,7 @@ public class Menu extends BasicGameState{
 			}
 		}
 		// button Exit Game
-		if ((posX > 45) && (posX < 65) && ((posY > 35) && (posY < 55 ))){
+		if ((posX > 30) && (posX < 80) && ((posY > 20) && (posY < 70 ))){
 			if (Mouse.isButtonDown(0)) {
 				System.exit(0);
 			}

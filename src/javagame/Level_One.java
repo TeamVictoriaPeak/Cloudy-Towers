@@ -1,6 +1,8 @@
 package javagame;
 
+import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Animation;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -18,14 +20,17 @@ public class Level_One extends BasicGameState {
 	float charPositionX = 400;
 	float charPositionY = 450;
 	float charPositionJump;
-
 	Image background, Cloud;
+	Image pauseWindow;
+	Image quitGame;
+	Image resumeGame;
 	float CloudX = 300, CloudY = 300;
 	float EarthY = 450;
 	boolean onEarth = true;
 	boolean onCloud = false;
 	boolean inAir = false;
 	boolean falling = false;
+	boolean pressEsc = false;
 	
 	int score;
 
@@ -39,7 +44,7 @@ public class Level_One extends BasicGameState {
 
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
-		//Създаване на масиви от картинки
+		//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		Image[] runRight = { new Image("res/Run_1.png"),
 				new Image("res/Run_2.png"), new Image("res/Run_3.png"),
 				new Image("res/Run_4.png") };
@@ -59,7 +64,7 @@ public class Level_One extends BasicGameState {
 		Image[] fallRight = { new Image("res/Jump_3.png") };
 		Image[] fallLeft = { new Image("res/Jump_3.png").getFlippedCopy(true,
 				false) };
-		//Създаване на анимации от масивите от картинки
+		//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		charMoveRight = new Animation(runRight, 150);
 		charMoveLeft = new Animation(runLeft, 150);
 		charJumpRight = new Animation(jumpRight, 150);
@@ -72,6 +77,9 @@ public class Level_One extends BasicGameState {
 
 		background = new Image("res/background.jpg");
 		Cloud = new Image("res/cloud.png");
+		pauseWindow = new Image("res/pauseWindow.png");
+		quitGame = new Image("res/Button-Turn-Off-icon.png");
+		resumeGame = new Image("res/Button-Play-icon.png");
 
 	}
 
@@ -82,9 +90,16 @@ public class Level_One extends BasicGameState {
 		Cloud.draw(CloudX, CloudY);
 		Cloud.draw(CloudX - 200, CloudY);
 		Cloud.draw(CloudX + 200, CloudY);
-		charCurrent.draw(charPositionX, charPositionY); // Принтиране на човечето на екрана заедно с неговите кординати.
+		charCurrent.draw(charPositionX, charPositionY); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
 		this.drawScore(g);
-		
+		if(pressEsc){
+			pauseWindow.draw(100,150);
+			quitGame.draw(130,320);
+			resumeGame.draw(400,320);
+			g.drawString("Pause", 330, 170);
+			g.drawString("Quit Game", 190, 330);
+			g.drawString("Resume Game", 460, 330);
+		}
 	}
 	
 	public void drawScore (Graphics g) {
@@ -96,12 +111,28 @@ public class Level_One extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame sbg, int g)
 			throws SlickException {
 		Input input = gc.getInput();
-
+		int posX = Mouse.getX();
+		int posY = Mouse.getY();
+		
+		if(input.isKeyDown(input.KEY_ESCAPE)) {
+			pressEsc = true;
+		}
+		if ((posX > 130) && (posX < 175) && ((posY > 230) && (posY < 280 ))){
+			if (Mouse.isButtonDown(0)) {
+				System.exit(0);
+			}
+		}
+		if ((posX > 400) && (posX < 445) && ((posY > 230) && (posY < 280 ))){
+			if (Mouse.isButtonDown(0)) {
+					pressEsc = false;
+				}
+		}
+		if(!pressEsc){
 		HeroOnEarth();
 		// HeroOnCloud();
-		//Провека дали героят се намира на земята или не.
+		//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ.
 		if ((onEarth == true || onCloud == true)
-				//Анимации когато героят е на земята
+				//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 				&& (charCurrent != charJumpRight && charCurrent != charJumpLeft)
 				&& !falling) {
 			if (input.isKeyDown(input.KEY_RIGHT) && charPositionX < 744) {
@@ -131,7 +162,7 @@ public class Level_One extends BasicGameState {
 				inAir = true;
 			}
 		} else {
-			//Анимации когато героят не е на земята
+			//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 			if (charPositionY <= charPositionJump) {
 				falling = true;
 				inAir = false;
@@ -182,9 +213,12 @@ public class Level_One extends BasicGameState {
 					charPositionY += g * 0.3;
 				}
 			}
-
 		}
+	}else {
+		pressEsc = true;
 	}
+}
+
 
 	private void HeroOnEarth() {
 

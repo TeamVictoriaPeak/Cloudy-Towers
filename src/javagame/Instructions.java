@@ -39,7 +39,7 @@ public class Instructions extends BasicGameState {
 		turnLeft = new Image("res/button2.png");
 		jump = new Image("res/space.png");
 		pause = new Image("res/esc.png");
-		back = new Image("res/symbol-delete-icon.png");
+		back = new Image("res/Button-Rewind-icon.png");
 		logoInstructions = new Image("res/111.png");
 		Font font = new Font("Serif",Font.PLAIN , 20);
 		uFont = new UnicodeFont(font, font.getSize(), font.isBold(), font.isItalic());
@@ -60,8 +60,8 @@ public class Instructions extends BasicGameState {
 		g.drawString("- Jump", 170, 340);
 		pause.draw(40, 400);
 		g.drawString("- Pause",150, 430);
-		back.draw(40,540);
-		g.drawString("Back to Main Menu", 100,555);
+		back.draw(100,540);
+		g.drawString("Back to Main Menu", 160,555);
 		
 	}
 	public void update(GameContainer gc, StateBasedGame sbg, int g)
@@ -70,7 +70,7 @@ public class Instructions extends BasicGameState {
 		int posY = Mouse.getY();
 		
 		// button Back to Main Menu
-		if ((posX > 53) && (posX < 73) && ((posY > 25) && (posY < 43 ))){
+		if ((posX > 100) && (posX < 150) && ((posY > 20) && (posY < 55 ))){
 			if (Mouse.isButtonDown(0)) {
 				sbg.enterState(0);
 			}
