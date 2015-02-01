@@ -1,8 +1,9 @@
 package javagame;
 
+import java.util.Random;
+
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Animation;
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -16,10 +17,12 @@ public class Level_One extends BasicGameState {
 
 	Animation charCurrent, charMoveRight, charMoveLeft, charJumpRight,
 			charJumpLeft, charStillRight, charStillLeft, charFallRight,
-			charFallLeft;
+			charFallLeft, coin;
 	float charPositionX = 400;
 	float charPositionY = 450;
 	float charPositionJump;
+	float coinPositionX = -70;
+	float coinPositionY = -70;
 	Image background, Cloud;
 	Image pauseWindow;
 	Image quitGame;
@@ -33,7 +36,7 @@ public class Level_One extends BasicGameState {
 	boolean inAir = false;
 	boolean falling = false;
 	boolean pressEsc = false;
-	
+	Random rndGenerator = new Random();
 	int score;
 
 	public Level_One(int state) {
@@ -46,7 +49,7 @@ public class Level_One extends BasicGameState {
 
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
-		//Създаване на масиви от картинки
+		//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		Image[] runRight = { new Image("res/Run_1.png"),
 				new Image("res/Run_2.png"), new Image("res/Run_3.png"),
 				new Image("res/Run_4.png") };
@@ -66,7 +69,11 @@ public class Level_One extends BasicGameState {
 		Image[] fallRight = { new Image("res/Jump_3.png") };
 		Image[] fallLeft = { new Image("res/Jump_3.png").getFlippedCopy(true,
 				false) };
-		//Създаване на анимации от масивите от картинки
+		Image[] bonus = { 
+				new Image("res/Coins_1.png"), new Image("res/Coins_2.png"),
+				new Image("res/Coins_3.png"), new Image("res/Coins_4.png"),
+				new Image("res/Coins_5.png") };
+		//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		charMoveRight = new Animation(runRight, 150);
 		charMoveLeft = new Animation(runLeft, 150);
 		charJumpRight = new Animation(jumpRight, 150);
@@ -76,6 +83,7 @@ public class Level_One extends BasicGameState {
 		charFallRight = new Animation(fallRight, 150);
 		charFallLeft = new Animation(fallLeft, 150);
 		charCurrent = charStillRight;
+		coin = new Animation(bonus, 150);
 
 		background = new Image("res/background.png");
 		Cloud = new Image("res/cloud.png");
@@ -92,8 +100,8 @@ public class Level_One extends BasicGameState {
 		Cloud.draw(CloudX1, CloudY1);
 		Cloud.draw(CloudX2, CloudY2);
 		Cloud.draw(CloudX3, CloudY3);
-		
-		// Принтиране на човечето на екрана заедно с неговите кординати.
+		coin.draw(coinPositionX, coinPositionY);
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
 		charCurrent.draw(charPositionX, charPositionY); 
 		this.drawScore(g);
 		if(pressEsc){
@@ -131,7 +139,14 @@ public class Level_One extends BasicGameState {
 		HeroOnEarth();
 		HeroOnCloud();
 		
-		//Провека дали героят се намира на земята или не.
+		//For illustrate purpose only.
+		score++;
+		if (score % 500 == 0) {
+			coinPositionX = rndGenerator.nextInt(600);
+			coinPositionY = rndGenerator.nextInt(400);
+		}
+		
+		//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ.
 		//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ.
 		if ((onEarth == true || onCloud == true)//РђРЅРёРјР°С†РёРё РєРѕРіР°С‚Рѕ РіРµСЂРѕСЏС‚ Рµ РЅР° Р·РµРјСЏС‚Р°
 				&& (charCurrent != charJumpRight && charCurrent != charJumpLeft)
@@ -164,7 +179,7 @@ public class Level_One extends BasicGameState {
 			}
 		} else {
 			
-			//Анимации когато героят скача
+			//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 			if (charPositionY <= charPositionJump) {
 				falling = true;
 				inAir = false;
@@ -194,7 +209,7 @@ public class Level_One extends BasicGameState {
 				charPositionY -= g * 0.3;
 			}
 
-			//Анимации когато героят пада
+			//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 			if (falling) {
 				if (input.isKeyDown(input.KEY_RIGHT) && charPositionX < 744) {
 					charCurrent = charFallRight;
@@ -224,7 +239,7 @@ public class Level_One extends BasicGameState {
 	
 	
 	
-	// Визуализиране на Score брояча
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ Score пїЅпїЅпїЅпїЅпїЅпїЅ
 	public void drawScore (Graphics g) {
 		g.setColor(Color.white);
 		g.drawString("SCORE " + score, 15, 15);
@@ -232,7 +247,7 @@ public class Level_One extends BasicGameState {
 	
 	
 
-	// Проверява дали героя е на земята
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	private void HeroOnEarth() {
 
 		if (charPositionY > EarthY) {
@@ -257,7 +272,7 @@ public class Level_One extends BasicGameState {
 
 	
 
-	// Проверява дали героя е върху облак
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 	private void HeroOnCloud() {
 
 		if (inBox(charPositionX, charPositionY, CloudX1 - 5, CloudY1 - 30, CloudX1 + 100, CloudY1)
