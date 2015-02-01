@@ -39,6 +39,7 @@ public class Level_One extends BasicGameState {
 
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
+		//Създаване на масиви от картинки
 		Image[] runRight = { new Image("res/Run_1.png"),
 				new Image("res/Run_2.png"), new Image("res/Run_3.png"),
 				new Image("res/Run_4.png") };
@@ -58,6 +59,7 @@ public class Level_One extends BasicGameState {
 		Image[] fallRight = { new Image("res/Jump_3.png") };
 		Image[] fallLeft = { new Image("res/Jump_3.png").getFlippedCopy(true,
 				false) };
+		//Създаване на анимации от масивите от картинки
 		charMoveRight = new Animation(runRight, 150);
 		charMoveLeft = new Animation(runLeft, 150);
 		charJumpRight = new Animation(jumpRight, 150);
@@ -80,7 +82,7 @@ public class Level_One extends BasicGameState {
 		Cloud.draw(CloudX, CloudY);
 		Cloud.draw(CloudX - 200, CloudY);
 		Cloud.draw(CloudX + 200, CloudY);
-		charCurrent.draw(charPositionX, charPositionY);
+		charCurrent.draw(charPositionX, charPositionY); // Принтиране на човечето на екрана заедно с неговите кординати.
 		this.drawScore(g);
 		
 	}
@@ -97,7 +99,9 @@ public class Level_One extends BasicGameState {
 
 		HeroOnEarth();
 		// HeroOnCloud();
+		//Провека дали героят се намира на земята или не.
 		if ((onEarth == true || onCloud == true)
+				//Анимации когато героят е на земята
 				&& (charCurrent != charJumpRight && charCurrent != charJumpLeft)
 				&& !falling) {
 			if (input.isKeyDown(input.KEY_RIGHT) && charPositionX < 744) {
@@ -127,6 +131,7 @@ public class Level_One extends BasicGameState {
 				inAir = true;
 			}
 		} else {
+			//Анимации когато героят не е на земята
 			if (charPositionY <= charPositionJump) {
 				falling = true;
 				inAir = false;
@@ -137,7 +142,7 @@ public class Level_One extends BasicGameState {
 				charCurrent = charJumpRight;
 				charPositionX += g * 0.5;
 				charPositionY -= g * 0.3;
-			} else if (!(input.isKeyDown(input.KEY_RIGHT))
+			} else if ((!(input.isKeyDown(input.KEY_RIGHT))||charPositionX>=744)
 					&& (charPositionY >= charPositionJump) && inAir
 					&& charCurrent == charJumpRight) {
 				charCurrent = charJumpRight;
@@ -149,7 +154,7 @@ public class Level_One extends BasicGameState {
 				charCurrent = charJumpLeft;
 				charPositionX -= g * 0.5;
 				charPositionY -= g * 0.3;
-			} else if (!(input.isKeyDown(input.KEY_LEFT))
+			} else if ((!(input.isKeyDown(input.KEY_LEFT))||charPositionX<=0)
 					&& (charPositionY >= charPositionJump) && inAir
 					&& charCurrent == charJumpLeft) {
 				charCurrent = charJumpLeft;
@@ -168,12 +173,12 @@ public class Level_One extends BasicGameState {
 					charPositionX -= g * 0.5;
 					charPositionY += g * 0.3;
 				}
-				if (charCurrent == charFallRight
-						&& !(input.isKeyDown(input.KEY_RIGHT))) {
+				if ((charCurrent == charFallRight
+						&& !(input.isKeyDown(input.KEY_RIGHT)))||charPositionX>=744) {
 					charPositionY += g * 0.3;
 				}
-				if (charCurrent == charFallLeft
-						&& !(input.isKeyDown(input.KEY_LEFT))) {
+				if ((charCurrent == charFallLeft
+						&& !(input.isKeyDown(input.KEY_LEFT)))||charPositionX<=0) {
 					charPositionY += g * 0.3;
 				}
 			}

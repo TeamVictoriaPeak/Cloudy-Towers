@@ -20,6 +20,7 @@ public class Instructions extends BasicGameState {
 	Image jump;
 	Image pause;
 	Image back;
+	Image logoInstructions;
 	UnicodeFont uFont;
 	
 	public Instructions(int state){
@@ -39,6 +40,7 @@ public class Instructions extends BasicGameState {
 		jump = new Image("res/space.png");
 		pause = new Image("res/esc.png");
 		back = new Image("res/symbol-delete-icon.png");
+		logoInstructions = new Image("res/111.png");
 		Font font = new Font("Serif",Font.PLAIN , 20);
 		uFont = new UnicodeFont(font, font.getSize(), font.isBold(), font.isItalic());
 	
@@ -49,7 +51,7 @@ public class Instructions extends BasicGameState {
 		//g.setFont(uFont);
 		g.setColor(Color.darkGray);
 		backGround.draw();
-		g.drawString("Instructions", 330, 10);
+		logoInstructions.draw(30,5);
 		turnRight.draw(40, 110);
 		g.drawString("- Turn Right",150 ,150);
 		turnLeft.draw(40,210);
