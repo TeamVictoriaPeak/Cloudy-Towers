@@ -69,6 +69,7 @@ public class Level_One extends BasicGameState {
 
 		background = new Image("res/background.jpg");
 		Cloud = new Image("res/cloud.png");
+
 	}
 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
@@ -89,97 +90,90 @@ public class Level_One extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame sbg, int g)
 			throws SlickException {
 		Input input = gc.getInput();
-				
+
 		HeroOnEarth();
 		// HeroOnCloud();
-		
-		
-		if((onEarth == true || onCloud == true)&&(charCurrent!=charJumpRight&&charCurrent!=charJumpLeft) && !falling)
-		{
-			if(input.isKeyDown(input.KEY_RIGHT)&&charPositionX<744)
-			{
+		if ((onEarth == true || onCloud == true)
+				&& (charCurrent != charJumpRight && charCurrent != charJumpLeft)
+				&& !falling) {
+			if (input.isKeyDown(input.KEY_RIGHT) && charPositionX < 744) {
 				charCurrent = charMoveRight;
-				charPositionX += g*0.5;
-			}
-			else if(charCurrent==charMoveRight&&!(input.isKeyDown(input.KEY_RIGHT)))
-			{
+				charPositionX += g * 0.5;
+			} else if (charCurrent == charMoveRight
+					&& !(input.isKeyDown(input.KEY_RIGHT))) {
 				charCurrent = charStillRight;
 			}
-			if(input.isKeyDown(input.KEY_LEFT)&&charPositionX>0)
-			{
+			if (input.isKeyDown(input.KEY_LEFT) && charPositionX > 0) {
 				charCurrent = charMoveLeft;
-				charPositionX -= g*0.5;
-			}
-			else if(charCurrent==charMoveLeft&&!(input.isKeyDown(input.KEY_LEFT)))
-			{
+				charPositionX -= g * 0.5;
+			} else if (charCurrent == charMoveLeft
+					&& !(input.isKeyDown(input.KEY_LEFT))) {
 				charCurrent = charStillLeft;
 			}
-			if(input.isKeyDown(input.KEY_SPACE)&&(charCurrent==charStillRight||charCurrent==charMoveRight))
-			{
-				charCurrent=charJumpRight;
-				charPositionJump = charPositionY-400;
+			if (input.isKeyDown(input.KEY_SPACE)
+					&& (charCurrent == charStillRight || charCurrent == charMoveRight)) {
+				charCurrent = charJumpRight;
+				charPositionJump = charPositionY - 400;
 				inAir = true;
 			}
-			if(input.isKeyDown(input.KEY_SPACE)&&(charCurrent==charStillLeft||charCurrent==charMoveLeft))
-			{
-				charCurrent=charJumpLeft;
-				charPositionJump = charPositionY-400;
+			if (input.isKeyDown(input.KEY_SPACE)
+					&& (charCurrent == charStillLeft || charCurrent == charMoveLeft)) {
+				charCurrent = charJumpLeft;
+				charPositionJump = charPositionY - 400;
 				inAir = true;
 			}
-		}
-		else
-		{
+		} else {
 			if (charPositionY <= charPositionJump) {
 				falling = true;
 				inAir = false;
 			}
-			if(input.isKeyDown(input.KEY_RIGHT)&&(charPositionY>=charPositionJump) && inAir && charPositionX<744)
-			{
-				charCurrent=charJumpRight;
-				charPositionX+=g*0.5;
-				charPositionY-=g*0.3;
+			if (input.isKeyDown(input.KEY_RIGHT)
+					&& (charPositionY >= charPositionJump) && inAir
+					&& charPositionX < 744) {
+				charCurrent = charJumpRight;
+				charPositionX += g * 0.5;
+				charPositionY -= g * 0.3;
+			} else if (!(input.isKeyDown(input.KEY_RIGHT))
+					&& (charPositionY >= charPositionJump) && inAir
+					&& charCurrent == charJumpRight) {
+				charCurrent = charJumpRight;
+				charPositionY -= g * 0.3;
 			}
-			else if(!(input.isKeyDown(input.KEY_RIGHT))&&(charPositionY>=charPositionJump) && inAir && charCurrent==charJumpRight)
-			{
-				charCurrent=charJumpRight;
-				charPositionY-=g*0.3;
+			if (input.isKeyDown(input.KEY_LEFT)
+					&& (charPositionY >= charPositionJump) && inAir
+					&& charPositionX > 0) {
+				charCurrent = charJumpLeft;
+				charPositionX -= g * 0.5;
+				charPositionY -= g * 0.3;
+			} else if (!(input.isKeyDown(input.KEY_LEFT))
+					&& (charPositionY >= charPositionJump) && inAir
+					&& charCurrent == charJumpLeft) {
+				charCurrent = charJumpLeft;
+				charPositionY -= g * 0.3;
 			}
-			if(input.isKeyDown(input.KEY_LEFT)&&(charPositionY>=charPositionJump) && inAir&&charPositionX>0)
-			{
-				charCurrent=charJumpLeft;
-				charPositionX-=g*0.5;
-				charPositionY-=g*0.3;
-			}
-			else if(!(input.isKeyDown(input.KEY_LEFT))&&(charPositionY>=charPositionJump) && inAir && charCurrent==charJumpLeft)
-			{
-				charCurrent=charJumpLeft;
-				charPositionY-=g*0.3;
-			}
-			
-			
-			
+
 			if (falling) {
-				if (input.isKeyDown(input.KEY_RIGHT)&&charPositionX<744) {
-					charCurrent=charFallRight;
-					charPositionX += g*0.5;
-					charPositionY += g*0.3;
+				if (input.isKeyDown(input.KEY_RIGHT) && charPositionX < 744) {
+					charCurrent = charFallRight;
+					charPositionX += g * 0.5;
+					charPositionY += g * 0.3;
 				}
-				
-				if (input.isKeyDown(input.KEY_LEFT)&&charPositionX>0) {
-					charCurrent=charFallLeft;
-					charPositionX -= g*0.5;
-					charPositionY += g*0.3;
+
+				if (input.isKeyDown(input.KEY_LEFT) && charPositionX > 0) {
+					charCurrent = charFallLeft;
+					charPositionX -= g * 0.5;
+					charPositionY += g * 0.3;
 				}
-				if(charCurrent==charFallRight&&!(input.isKeyDown(input.KEY_RIGHT)))
-				{
-					charPositionY += g*0.3;
+				if (charCurrent == charFallRight
+						&& !(input.isKeyDown(input.KEY_RIGHT))) {
+					charPositionY += g * 0.3;
 				}
-				if(charCurrent==charFallLeft&&!(input.isKeyDown(input.KEY_LEFT)))
-				{
-					charPositionY += g*0.3;
+				if (charCurrent == charFallLeft
+						&& !(input.isKeyDown(input.KEY_LEFT))) {
+					charPositionY += g * 0.3;
 				}
 			}
-			
+
 		}
 	}
 
@@ -192,12 +186,12 @@ public class Level_One extends BasicGameState {
 		if (charPositionY >= EarthY) {
 			onEarth = true;
 
-			if (falling && charCurrent == charJumpRight) {
+			if (falling && charCurrent == charFallRight) {
 				charCurrent = charStillRight;
 				falling = false;
 			}
-			
-			if (falling && charCurrent == charJumpLeft) {
+
+			if (falling && charCurrent == charFallLeft) {
 				charCurrent = charStillLeft;
 				falling = false;
 			}
@@ -212,7 +206,7 @@ public class Level_One extends BasicGameState {
 			onCloud = true;
 			falling = false;
 			inAir = false;
-			
+
 		} else {
 			onCloud = false;
 		}
