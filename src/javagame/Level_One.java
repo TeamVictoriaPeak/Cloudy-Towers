@@ -1,6 +1,7 @@
 package javagame;
 
 import org.newdawn.slick.Animation;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -74,16 +75,19 @@ public class Level_One extends BasicGameState {
 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
 			throws SlickException {
+		gc.setShowFPS(false);
 		background.draw();
 		Cloud.draw(CloudX, CloudY);
 		Cloud.draw(CloudX - 200, CloudY);
 		Cloud.draw(CloudX + 200, CloudY);
 		charCurrent.draw(charPositionX, charPositionY);
+		this.drawScore(g);
 		
 	}
 	
 	public void drawScore (Graphics g) {
-		g.drawString("score " + score, 50, 600);
+		g.setColor(Color.white);
+		g.drawString("SCORE " + score, 15, 15);
 	}
 
 	@SuppressWarnings("static-access")
