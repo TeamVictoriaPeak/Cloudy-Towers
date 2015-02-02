@@ -101,9 +101,12 @@ public class Level_One extends BasicGameState {
 
 		background = new Image("res/background.png");
 		Cloud = new Image("res/cloud.png");
-		pauseWindow = new Image("res/pauseWindow.png");
-		quitGame = new Image("res/Button-Turn-Off-icon.png");
-		resumeGame = new Image("res/Button-Play-icon.png");
+		
+		
+		
+		pauseWindow = new Image("res/GamePauseMenu.png");
+//		quitGame = new Image("res/Button-Turn-Off-icon.png");
+//		resumeGame = new Image("res/Button-Play-icon.png");
 
 	}
 
@@ -122,13 +125,17 @@ public class Level_One extends BasicGameState {
 		// Printirane na 4ove4eto na ekrana, zaedno s negovite koordinati
 		charCurrent.draw(charPositionX, charPositionY);
 		this.drawScore(g);
+		
+		
 		if (pressEsc) {
-			pauseWindow.draw(100, 150);
-			quitGame.draw(130, 320);
-			resumeGame.draw(400, 320);
-			g.drawString("Pause", 330, 170);
-			g.drawString("Quit Game", 190, 330);
-			g.drawString("Resume Game", 460, 330);
+						
+			pauseWindow.draw(200, 150);
+			
+//			quitGame.draw(130, 320);
+//			resumeGame.draw(400, 320);
+//			g.drawString("Pause", 330, 170);
+//			g.drawString("Quit Game", 190, 330);
+//			g.drawString("Resume Game", 460, 330);
 		}
 	}
 
@@ -266,14 +273,14 @@ public class Level_One extends BasicGameState {
 		} else {
 
 			// Izlizane ot igrata
-			if ((posX > 130) && (posX < 175) && ((posY > 230) && (posY < 280))) {
+			if ((posX > 300) && (posX < 500) && ((posY > 230) && (posY < 280))) {
 				if (Mouse.isButtonDown(0)) {
 					System.exit(0);
 				}
 			}
 
 			// Resume na igrata
-			if ((posX > 400) && (posX < 445) && ((posY > 230) && (posY < 280))) {
+			if ((posX > 300) && (posX < 500) && ((posY > 300) && (posY < 350))) {
 				if (Mouse.isButtonDown(0)) {
 					pressEsc = false;
 				}
