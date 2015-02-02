@@ -23,7 +23,7 @@ public class Level_One extends BasicGameState {
 	float charPositionJump;
 	float coinPositionX = -70;
 	float coinPositionY = -70;
-	Image background, Cloud;
+	Image background; //Cloud;
 	Image pauseWindow;
 	Image quitGame;
 	Image resumeGame;
@@ -38,6 +38,24 @@ public class Level_One extends BasicGameState {
 	boolean pressEsc = false;
 	Random rndGenerator = new Random();
 	int score;
+	
+	// tisho
+		int firstFloorCloudX;
+		int firstFloorCloudY;
+		
+		int secondFloorCloudX;
+		int secondFloorCloudY;
+		
+		int thirdFloorCloudX;
+		int thirdFloorCloudY;
+		
+		int fourthFloorCloudX;
+		int fourthFloorCloudY;
+		Image firstFloorCloud, secondFloorCloud, thirdFloorCloud, fourthFloorCloud, moveCloud, moveCloud2;
+		
+		private float  moveCloudX, moveCloudY;
+		private float  moveCloud2X, moveCloud2Y;
+	// tisho
 
 	public Level_One(int state) {
 
@@ -46,6 +64,14 @@ public class Level_One extends BasicGameState {
 	public int getID() {
 		return 1;
 	}
+	
+	// tisho
+		public void drawClouds(GameContainer gc) {
+			
+		}
+	// tisho
+	
+	
 
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
@@ -86,10 +112,32 @@ public class Level_One extends BasicGameState {
 		coin = new Animation(bonus, 150);
 
 		background = new Image("res/background.png");
-		Cloud = new Image("res/cloud.png");
+		//Cloud = new Image("res/cloud.png");
 		pauseWindow = new Image("res/pauseWindow.png");
 		quitGame = new Image("res/Button-Turn-Off-icon.png");
 		resumeGame = new Image("res/Button-Play-icon.png");
+		
+		// tisho
+			firstFloorCloud = new Image("res/cloud6.png");
+			secondFloorCloud = new Image("res/cloud8.png");
+			thirdFloorCloud = new Image("res/cloud4.png");
+			fourthFloorCloud = new Image("res/cloud9.png");
+			
+			moveCloud = new Image("res/moveCloud.png");
+			moveCloud2 = new Image("res/moveCloud2.png");
+		
+		// tisho
+		
+		// tisho
+				moveCloudX = 200;
+				moveCloudY = 150;
+				
+				moveCloud2X = 200;
+				moveCloud2Y = 400;
+				
+		// tisho
+		
+		
 
 	}
 
@@ -97,10 +145,39 @@ public class Level_One extends BasicGameState {
 			throws SlickException {
 		gc.setShowFPS(false);
 		background.draw();
-		Cloud.draw(CloudX1, CloudY1);
-		Cloud.draw(CloudX2, CloudY2);
-		Cloud.draw(CloudX3, CloudY3);
+		//Cloud.draw(CloudX1, CloudY1);
+		//Cloud.draw(CloudX2, CloudY2);
+		//Cloud.draw(CloudX3, CloudY3);
 		coin.draw(coinPositionX, coinPositionY);
+		
+		// tisho
+		firstFloorCloud.draw(firstFloorCloudX + 20, firstFloorCloudY + 300);
+		firstFloorCloud.draw(firstFloorCloudX + 100, firstFloorCloudY + 300);
+		firstFloorCloud.draw(firstFloorCloudX + 580, firstFloorCloudY + 300);
+		firstFloorCloud.draw(firstFloorCloudX + 660, firstFloorCloudY + 300);
+		
+		
+		secondFloorCloud.draw(secondFloorCloudX + 400, secondFloorCloudY + 180);
+		secondFloorCloud.draw(secondFloorCloudX + 470, secondFloorCloudY + 180);
+		secondFloorCloud.draw(secondFloorCloudX + 540, secondFloorCloudY + 180);
+		
+		
+		thirdFloorCloud.draw(thirdFloorCloudX + 10, thirdFloorCloudY + 100, 96, 96);
+		thirdFloorCloud.draw(thirdFloorCloudX + 55, thirdFloorCloudY + 100, 96, 96);
+		//thirdFloorCloud.draw(thirdFloorCloudX + 200, thirdFloorCloudY + 150, 80, 80);
+		
+		
+		
+		fourthFloorCloud.draw(fourthFloorCloudX + 300, fourthFloorCloudY + 30, 100, 96);
+		fourthFloorCloud.draw(fourthFloorCloudX + 350, fourthFloorCloudY + 30, 100, 96);
+		fourthFloorCloud.draw(fourthFloorCloudX + 550, fourthFloorCloudY + 30, 100, 96);
+		fourthFloorCloud.draw(fourthFloorCloudX + 600, fourthFloorCloudY + 30, 100, 96);
+		
+		moveCloud.draw(moveCloudX ,moveCloudY, 85, 85);
+		moveCloud2.draw(moveCloud2X ,moveCloud2Y, 85, 85);
+		//tisho
+		
+		
 		// ���������� �� �������� �� ������ ������ � �������� ���������.
 		charCurrent.draw(charPositionX, charPositionY); 
 		this.drawScore(g);
@@ -111,6 +188,11 @@ public class Level_One extends BasicGameState {
 			g.drawString("Pause", 330, 170);
 			g.drawString("Quit Game", 190, 330);
 			g.drawString("Resume Game", 460, 330);
+			
+			
+			
+			
+			
 		}
 	}
 	
@@ -118,6 +200,30 @@ public class Level_One extends BasicGameState {
 	@SuppressWarnings("static-access")
 	public void update(GameContainer gc, StateBasedGame sbg, int g)
 			throws SlickException {
+		
+		// tisho
+		moveCloudX += 0.04 * g;
+		//moveCloudY -= 0.01 * g;
+		if(moveCloudX > 400 || moveCloudX < 200) {
+			moveCloudX = 200;
+			//moveCloudY = 200;
+		}
+		
+		moveCloud2Y -= 0.04 * g;
+		
+		if(moveCloud2Y < 200) {
+			moveCloud2Y = 400;
+			
+		}
+		
+		
+		
+		fourthFloorCloudX += 0.1 * g;
+		
+		
+		// tisho
+		
+		
 		Input input = gc.getInput();
 		int posX = Mouse.getX();
 		int posY = Mouse.getY();
