@@ -19,7 +19,6 @@ public class Level_One extends BasicGameState {
 
 	Animation charCurrent, charMoveRight, charMoveLeft, charJumpRight,
 			charJumpLeft, charStillRight, charStillLeft, charFallRight,
-			charFallLeft, coin;
 			charFallLeft, coin, powerUp;
 	float charPositionX = 400;
 	float charPositionY = 450;
