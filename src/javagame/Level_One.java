@@ -58,6 +58,7 @@ public class Level_One extends BasicGameState {
 		
 		int fourthFloorCloudX;
 		int fourthFloorCloudY;
+		
 		Image firstFloorCloud, secondFloorCloud, thirdFloorCloud, fourthFloorCloud, moveCloud, moveCloud2;
 		
 		private float  moveCloudX, moveCloudY;
@@ -126,32 +127,25 @@ public class Level_One extends BasicGameState {
 		coin = new Animation(bonus, 150);
 
 		background = new Image("res/background.png");
-		//Cloud = new Image("res/cloud.png");
-		
-		
 		
 		pauseWindow = new Image("res/GamePauseMenu.png");
 //		quitGame = new Image("res/Button-Turn-Off-icon.png");
 //		resumeGame = new Image("res/Button-Play-icon.png");
 		
 		// tisho
-			firstFloorCloud = new Image("res/cloud6.png");
-			secondFloorCloud = new Image("res/cloud8.png");
-			thirdFloorCloud = new Image("res/cloud4.png");
-			fourthFloorCloud = new Image("res/cloud9.png");
+			firstFloorCloud = new Image("res/firstFloorCloud.png");
+			secondFloorCloud = new Image("res/secondFloorCloud.png");
+			thirdFloorCloud = new Image("res/thirdFloorCloud.png");
+			fourthFloorCloud = new Image("res/fourthFloorCloud.png");
 			
 			moveCloud = new Image("res/moveCloud.png");
 			moveCloud2 = new Image("res/moveCloud2.png");
-		
 		// tisho
-		
-		// tisho
-				moveCloudX = 200;
-				moveCloudY = 150;
+			moveCloudX = 200;
+			moveCloudY = 150;
 				
-				moveCloud2X = 200;
-				moveCloud2Y = 400;
-				
+			moveCloud2X = 200;
+			moveCloud2Y = 400;	
 		// tisho
 		
 		
@@ -164,39 +158,33 @@ public class Level_One extends BasicGameState {
 		background.draw();
 
 		drawPowerUp(gc, powerUpList);
-
-//		Cloud.draw(CloudX1, CloudY1);
-//		Cloud.draw(CloudX2, CloudY2);
-//		Cloud.draw(CloudX3, CloudY3);
+		
 		coin.draw(coinPositionX, coinPositionY);
 
 		// Printirane na 4ove4eto na ekrana, zaedno s negovite koordinati
 		charCurrent.draw(charPositionX, charPositionY);
+		
+		
 		// tisho
-		firstFloorCloud.draw(firstFloorCloudX + 20, firstFloorCloudY + 300);
-		firstFloorCloud.draw(firstFloorCloudX + 100, firstFloorCloudY + 300);
-		firstFloorCloud.draw(firstFloorCloudX + 580, firstFloorCloudY + 300);
-		firstFloorCloud.draw(firstFloorCloudX + 660, firstFloorCloudY + 300);
-		
-		
-		secondFloorCloud.draw(secondFloorCloudX + 400, secondFloorCloudY + 180);
-		secondFloorCloud.draw(secondFloorCloudX + 470, secondFloorCloudY + 180);
-		secondFloorCloud.draw(secondFloorCloudX + 540, secondFloorCloudY + 180);
-		
-		
-		thirdFloorCloud.draw(thirdFloorCloudX + 10, thirdFloorCloudY + 100, 96, 96);
-		thirdFloorCloud.draw(thirdFloorCloudX + 55, thirdFloorCloudY + 100, 96, 96);
-		//thirdFloorCloud.draw(thirdFloorCloudX + 200, thirdFloorCloudY + 150, 80, 80);
-		
-		
-		
-		fourthFloorCloud.draw(fourthFloorCloudX + 300, fourthFloorCloudY + 30, 100, 96);
-		fourthFloorCloud.draw(fourthFloorCloudX + 350, fourthFloorCloudY + 30, 100, 96);
-		fourthFloorCloud.draw(fourthFloorCloudX + 550, fourthFloorCloudY + 30, 100, 96);
-		fourthFloorCloud.draw(fourthFloorCloudX + 600, fourthFloorCloudY + 30, 100, 96);
-		
-		moveCloud.draw(moveCloudX ,moveCloudY, 85, 85);
-		moveCloud2.draw(moveCloud2X ,moveCloud2Y, 85, 85);
+			firstFloorCloud.draw(firstFloorCloudX + 20, firstFloorCloudY + 300);
+			firstFloorCloud.draw(firstFloorCloudX + 100, firstFloorCloudY + 300);
+			firstFloorCloud.draw(firstFloorCloudX + 580, firstFloorCloudY + 300);
+			firstFloorCloud.draw(firstFloorCloudX + 660, firstFloorCloudY + 300);
+			
+			secondFloorCloud.draw(secondFloorCloudX + 400, secondFloorCloudY + 180);
+			secondFloorCloud.draw(secondFloorCloudX + 470, secondFloorCloudY + 180);
+			secondFloorCloud.draw(secondFloorCloudX + 540, secondFloorCloudY + 180);
+			
+			thirdFloorCloud.draw(thirdFloorCloudX + 10, thirdFloorCloudY + 100, 96, 96);
+			thirdFloorCloud.draw(thirdFloorCloudX + 55, thirdFloorCloudY + 100, 96, 96);
+			
+			fourthFloorCloud.draw(fourthFloorCloudX + 300, fourthFloorCloudY + 30, 100, 96);
+			fourthFloorCloud.draw(fourthFloorCloudX + 350, fourthFloorCloudY + 30, 100, 96);
+			fourthFloorCloud.draw(fourthFloorCloudX + 550, fourthFloorCloudY + 30, 100, 96);
+			fourthFloorCloud.draw(fourthFloorCloudX + 600, fourthFloorCloudY + 30, 100, 96);
+			
+			moveCloud.draw(moveCloudX ,moveCloudY, 85, 85);
+			moveCloud2.draw(moveCloud2X ,moveCloud2Y, 85, 85);
 		//tisho
 		
 		
@@ -227,29 +215,23 @@ public class Level_One extends BasicGameState {
 			throws SlickException {
 		
 		// tisho
-		moveCloudX += 0.04 * g;
-		//moveCloudY -= 0.01 * g;
-		if(moveCloudX > 400 || moveCloudX < 200) {
-			moveCloudX = 200;
-			//moveCloudY = 200;
-		}
-		
-		moveCloud2Y -= 0.04 * g;
-		
-		if(moveCloud2Y < 200) {
-			moveCloud2Y = 400;
+			moveCloudX += 0.04 * g;
+			if(moveCloudX > 400 || moveCloudX < 200) {
+				moveCloudX = 200;
+				
+			}
 			
-		}
+			moveCloud2Y -= 0.04 * g;
+			if(moveCloud2Y < 200) {
+				moveCloud2Y = 400;
+				
+			}
 		
-		
-		
-		fourthFloorCloudX += 0.18 * g;
-		if(fourthFloorCloudX > 700) {
-			fourthFloorCloudX = 20;
-			
-		}
-		
-		
+			fourthFloorCloudX += 0.18 * g;
+			if(fourthFloorCloudX > 700) {
+				fourthFloorCloudX = 20;
+				
+			}
 		// tisho
 		
 		
