@@ -19,6 +19,7 @@ public class Level_One extends BasicGameState {
 
 	Animation charCurrent, charMoveRight, charMoveLeft, charJumpRight,
 			charJumpLeft, charStillRight, charStillLeft, charFallRight,
+			charFallLeft, coin;
 			charFallLeft, coin, powerUp;
 	float charPositionX = 400;
 	float charPositionY = 450;
@@ -46,6 +47,24 @@ public class Level_One extends BasicGameState {
 	boolean pressEsc = false;
 	Random rndGenerator = new Random();
 	int score;
+	
+	// tisho
+		int firstFloorCloudX;
+		int firstFloorCloudY;
+		
+		int secondFloorCloudX;
+		int secondFloorCloudY;
+		
+		int thirdFloorCloudX;
+		int thirdFloorCloudY;
+		
+		int fourthFloorCloudX;
+		int fourthFloorCloudY;
+		Image firstFloorCloud, secondFloorCloud, thirdFloorCloud, fourthFloorCloud, moveCloud, moveCloud2;
+		
+		private float  moveCloudX, moveCloudY;
+		private float  moveCloud2X, moveCloud2Y;
+	// tisho
 
 	List<PowerUp> powerUpList = new LinkedList<PowerUp>();
 	List<BonusCoin> bonusList = new LinkedList<BonusCoin>();
@@ -61,6 +80,14 @@ public class Level_One extends BasicGameState {
 	public int getID() {
 		return 1;
 	}
+	
+	// tisho
+		public void drawClouds(GameContainer gc) {
+			
+		}
+	// tisho
+	
+	
 
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
@@ -105,13 +132,35 @@ public class Level_One extends BasicGameState {
 		powerUp = new Animation(wings, 150);
 
 		background = new Image("res/background.png");
-		Cloud = new Image("res/cloud.png");
+		//Cloud = new Image("res/cloud.png");
 		
 		
 		
 		pauseWindow = new Image("res/GamePauseMenu.png");
 //		quitGame = new Image("res/Button-Turn-Off-icon.png");
 //		resumeGame = new Image("res/Button-Play-icon.png");
+		
+		// tisho
+			firstFloorCloud = new Image("res/cloud6.png");
+			secondFloorCloud = new Image("res/cloud8.png");
+			thirdFloorCloud = new Image("res/cloud4.png");
+			fourthFloorCloud = new Image("res/cloud9.png");
+			
+			moveCloud = new Image("res/moveCloud.png");
+			moveCloud2 = new Image("res/moveCloud2.png");
+		
+		// tisho
+		
+		// tisho
+				moveCloudX = 200;
+				moveCloudY = 150;
+				
+				moveCloud2X = 200;
+				moveCloud2Y = 400;
+				
+		// tisho
+		
+		
 
 	}
 
@@ -123,13 +172,43 @@ public class Level_One extends BasicGameState {
 		drawPowerUp(gc, powerUpList);
 		drawBonusCoin(gc, bonusList);
 
-		Cloud.draw(CloudX1, CloudY1);
-		Cloud.draw(CloudX2, CloudY2);
-		Cloud.draw(CloudX3, CloudY3);
-//		coin.draw(coinPositionX, coinPositionY);
+//		Cloud.draw(CloudX1, CloudY1);
+//		Cloud.draw(CloudX2, CloudY2);
+//		Cloud.draw(CloudX3, CloudY3);
+		coin.draw(coinPositionX, coinPositionY);
 
 		// Printirane na 4ove4eto na ekrana, zaedno s negovite koordinati
 		charCurrent.draw(charPositionX, charPositionY);
+		// tisho
+		firstFloorCloud.draw(firstFloorCloudX + 20, firstFloorCloudY + 300);
+		firstFloorCloud.draw(firstFloorCloudX + 100, firstFloorCloudY + 300);
+		firstFloorCloud.draw(firstFloorCloudX + 580, firstFloorCloudY + 300);
+		firstFloorCloud.draw(firstFloorCloudX + 660, firstFloorCloudY + 300);
+		
+		
+		secondFloorCloud.draw(secondFloorCloudX + 400, secondFloorCloudY + 180);
+		secondFloorCloud.draw(secondFloorCloudX + 470, secondFloorCloudY + 180);
+		secondFloorCloud.draw(secondFloorCloudX + 540, secondFloorCloudY + 180);
+		
+		
+		thirdFloorCloud.draw(thirdFloorCloudX + 10, thirdFloorCloudY + 100, 96, 96);
+		thirdFloorCloud.draw(thirdFloorCloudX + 55, thirdFloorCloudY + 100, 96, 96);
+		//thirdFloorCloud.draw(thirdFloorCloudX + 200, thirdFloorCloudY + 150, 80, 80);
+		
+		
+		
+		fourthFloorCloud.draw(fourthFloorCloudX + 300, fourthFloorCloudY + 30, 100, 96);
+		fourthFloorCloud.draw(fourthFloorCloudX + 350, fourthFloorCloudY + 30, 100, 96);
+		fourthFloorCloud.draw(fourthFloorCloudX + 550, fourthFloorCloudY + 30, 100, 96);
+		fourthFloorCloud.draw(fourthFloorCloudX + 600, fourthFloorCloudY + 30, 100, 96);
+		
+		moveCloud.draw(moveCloudX ,moveCloudY, 85, 85);
+		moveCloud2.draw(moveCloud2X ,moveCloud2Y, 85, 85);
+		//tisho
+		
+		
+		// ?????????? ?? ???????? ?? ?????? ?????? ? ???????? ?????????.
+		charCurrent.draw(charPositionX, charPositionY); 
 		this.drawScore(g);
 		
 		
@@ -142,12 +221,41 @@ public class Level_One extends BasicGameState {
 //			g.drawString("Pause", 330, 170);
 //			g.drawString("Quit Game", 190, 330);
 //			g.drawString("Resume Game", 460, 330);
+			
+			
+			
+			
+			
 		}
 	}
 
 	@SuppressWarnings("static-access")
 	public void update(GameContainer gc, StateBasedGame sbg, int g)
 			throws SlickException {
+		
+		// tisho
+		moveCloudX += 0.04 * g;
+		//moveCloudY -= 0.01 * g;
+		if(moveCloudX > 400 || moveCloudX < 200) {
+			moveCloudX = 200;
+			//moveCloudY = 200;
+		}
+		
+		moveCloud2Y -= 0.04 * g;
+		
+		if(moveCloud2Y < 200) {
+			moveCloud2Y = 400;
+			
+		}
+		
+		
+		
+		fourthFloorCloudX += 0.1 * g;
+		
+		
+		// tisho
+		
+		
 		Input input = gc.getInput();
 		int posX = Mouse.getX();
 		int posY = Mouse.getY();
@@ -397,12 +505,12 @@ public class Level_One extends BasicGameState {
 	// Proverqva dali geroqt e varhu oblak
 	private void HeroOnCloud() {
 
-		if (inBox(charPositionX, charPositionY, CloudX1 - 5, CloudY1 - 30,
-				CloudX1 + 100, CloudY1)
-				|| inBox(charPositionX, charPositionY, CloudX2 - 5,
-						CloudY2 - 30, CloudX2 + 100, CloudY2)
-				|| inBox(charPositionX, charPositionY, CloudX3 - 5,
-						CloudY3 - 30, CloudX3 + 100, CloudY3)) {
+		if (inBox(charPositionX, charPositionY, firstFloorCloudX + 560, firstFloorCloudY + 300,
+				firstFloorCloudX + 755, firstFloorCloudY + 320)
+				|| inBox(charPositionX, charPositionY,firstFloorCloudX  + 10,
+						firstFloorCloudY + 300, firstFloorCloudX + 200, firstFloorCloudY + 320)
+				|| inBox(charPositionX, charPositionY, secondFloorCloudX + 380,
+						secondFloorCloudY + 180, secondFloorCloudX + 650, secondFloorCloudY + 200)) {
 			onCloud = true;
 
 			if (falling && charCurrent == charFallRight) {
