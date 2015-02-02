@@ -243,7 +243,11 @@ public class Level_One extends BasicGameState {
 		
 		
 		
-		fourthFloorCloudX += 0.1 * g;
+		fourthFloorCloudX += 0.18 * g;
+		if(fourthFloorCloudX > 700) {
+			fourthFloorCloudX = 20;
+			
+		}
 		
 		
 		// tisho
@@ -310,13 +314,13 @@ public class Level_One extends BasicGameState {
 				if (input.isKeyDown(input.KEY_SPACE)
 						&& (charCurrent == charStillRight || charCurrent == charMoveRight)) {
 					charCurrent = charJumpRight;
-					charPositionJump = charPositionY - 400;
+					charPositionJump = charPositionY - 150;
 					inAir = true;
 				}
 				if (input.isKeyDown(input.KEY_SPACE)
 						&& (charCurrent == charStillLeft || charCurrent == charMoveLeft)) {
 					charCurrent = charJumpLeft;
-					charPositionJump = charPositionY - 400;
+					charPositionJump = charPositionY - 150;
 					inAir = true;
 				}
 			} else {
@@ -468,12 +472,12 @@ public class Level_One extends BasicGameState {
 	// Proverqva dali geroqt e varhu oblak
 	private void HeroOnCloud() {
 
-		if (inBox(charPositionX, charPositionY, firstFloorCloudX + 560, firstFloorCloudY + 300,
-				firstFloorCloudX + 755, firstFloorCloudY + 320)
-				|| inBox(charPositionX, charPositionY,firstFloorCloudX  + 10,
-						firstFloorCloudY + 300, firstFloorCloudX + 200, firstFloorCloudY + 320)
-				|| inBox(charPositionX, charPositionY, secondFloorCloudX + 380,
-						secondFloorCloudY + 180, secondFloorCloudX + 650, secondFloorCloudY + 200)) {
+		if (inBox(charPositionX, charPositionY, firstFloorCloudX + 560, firstFloorCloudY + 300, firstFloorCloudX + 755, firstFloorCloudY + 320)
+		|| inBox(charPositionX, charPositionY,firstFloorCloudX  + 10, firstFloorCloudY + 300, firstFloorCloudX + 200, firstFloorCloudY + 320)
+		|| inBox(charPositionX, charPositionY, secondFloorCloudX + 380, secondFloorCloudY + 180, secondFloorCloudX + 650, secondFloorCloudY + 200) 
+		|| inBox(charPositionX, charPositionY, thirdFloorCloudX + 10, thirdFloorCloudY + 70, thirdFloorCloudX + 100, thirdFloorCloudY + 80))
+			
+		{
 			onCloud = true;
 
 			if (falling && charCurrent == charFallRight) {
