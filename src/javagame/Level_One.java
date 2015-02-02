@@ -468,12 +468,12 @@ public class Level_One extends BasicGameState {
 	// Proverqva dali geroqt e varhu oblak
 	private void HeroOnCloud() {
 
-		if (inBox(charPositionX, charPositionY, CloudX1 - 5, CloudY1 - 30,
-				CloudX1 + 100, CloudY1)
-				|| inBox(charPositionX, charPositionY, CloudX2 - 5,
-						CloudY2 - 30, CloudX2 + 100, CloudY2)
-				|| inBox(charPositionX, charPositionY, CloudX3 - 5,
-						CloudY3 - 30, CloudX3 + 100, CloudY3)) {
+		if (inBox(charPositionX, charPositionY, firstFloorCloudX + 560, firstFloorCloudY + 300,
+				firstFloorCloudX + 755, firstFloorCloudY + 320)
+				|| inBox(charPositionX, charPositionY,firstFloorCloudX  + 10,
+						firstFloorCloudY + 300, firstFloorCloudX + 200, firstFloorCloudY + 320)
+				|| inBox(charPositionX, charPositionY, secondFloorCloudX + 380,
+						secondFloorCloudY + 180, secondFloorCloudX + 650, secondFloorCloudY + 200)) {
 			onCloud = true;
 
 			if (falling && charCurrent == charFallRight) {
