@@ -167,6 +167,8 @@ public class Level_One extends BasicGameState {
 			
 			HeroOnEarth();
 			HeroOnCloud();
+			
+			score++;
 
 			if (score % 5000 == 0) {
 				powerUpPositionX = rndGenerator.nextInt(600);
@@ -183,12 +185,6 @@ public class Level_One extends BasicGameState {
 				coinPositionY = rndGenerator.nextInt(400);
 				bonusList.add(new BonusCoin(coinPositionX, coinPositionY, coin));
 			}
-			
-			score++;
-//			if (score % 8000 == 0) {
-//				coinPositionX = rndGenerator.nextInt(600);
-//				coinPositionY = rndGenerator.nextInt(400);
-//			}
 			if (takenBonusCoin()) {
 				score += 8000;
 			}
@@ -317,7 +313,7 @@ public class Level_One extends BasicGameState {
 	
 	
 	
-	// Vizualizirane na Score countera
+	//  na Score countera
 	public void drawScore(Graphics g) {
 		g.setColor(Color.white);
 		g.drawString("SCORE " + score, 15, 15);
@@ -330,7 +326,7 @@ public class Level_One extends BasicGameState {
 		}
 	}
 
-	// PowerUp Draw
+	// Bonus Coin Draw
 	public void drawBonusCoin(GameContainer gc, List<BonusCoin> bonusCoins) {
 		for (BonusCoin coin : bonusList) {
 			coin.bonusCoinAnimation.draw(coin.coinX, coin.coinY);
