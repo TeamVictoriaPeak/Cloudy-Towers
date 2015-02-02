@@ -19,12 +19,13 @@ public class Level_One extends BasicGameState {
 
 	Animation charCurrent, charMoveRight, charMoveLeft, charJumpRight,
 			charJumpLeft, charStillRight, charStillLeft, charFallRight,
-			charFallLeft, coin;
+			charFallLeft, coin, powerUp;
 	float charPositionX = 400;
 	float charPositionY = 450;
 	float charPositionJump;
-	float coinPositionX = -70;
-	float coinPositionY = -70;
+	
+	float coinPositionX;
+	float coinPositionY;
 
 	float powerUpPositionX;
 	float powerUpPositionY;
@@ -47,6 +48,7 @@ public class Level_One extends BasicGameState {
 	int score;
 
 	List<PowerUp> powerUpList = new LinkedList<PowerUp>();
+	List<BonusCoin> bonusList = new LinkedList<BonusCoin>();
 
 	// -------------------------------------------------------
 	// Novite metodi se sazdavat POD metoda UPDATE!
@@ -86,6 +88,8 @@ public class Level_One extends BasicGameState {
 		Image[] bonus = { new Image("res/Coins_1.png"),
 				new Image("res/Coins_2.png"), new Image("res/Coins_3.png"),
 				new Image("res/Coins_4.png"), new Image("res/Coins_5.png") };
+		Image[] wings = { new Image("/res/wings-1.png"),
+				 new Image("/res/wings-2.png"), new Image("/res/wings-3.png") };
 
 		// Sazdavane na animacii ot masivite ot kartinki
 		charMoveRight = new Animation(runRight, 150);
@@ -98,6 +102,7 @@ public class Level_One extends BasicGameState {
 		charFallLeft = new Animation(fallLeft, 150);
 		charCurrent = charStillRight;
 		coin = new Animation(bonus, 150);
+		powerUp = new Animation(wings, 150);
 
 		background = new Image("res/background.png");
 		Cloud = new Image("res/cloud.png");
@@ -116,11 +121,12 @@ public class Level_One extends BasicGameState {
 		background.draw();
 
 		drawPowerUp(gc, powerUpList);
+		drawBonusCoin(gc, bonusList);
 
 		Cloud.draw(CloudX1, CloudY1);
 		Cloud.draw(CloudX2, CloudY2);
 		Cloud.draw(CloudX3, CloudY3);
-		coin.draw(coinPositionX, coinPositionY);
+//		coin.draw(coinPositionX, coinPositionY);
 
 		// Printirane na 4ove4eto na ekrana, zaedno s negovite koordinati
 		charCurrent.draw(charPositionX, charPositionY);
@@ -165,19 +171,28 @@ public class Level_One extends BasicGameState {
 			if (score % 5000 == 0) {
 				powerUpPositionX = rndGenerator.nextInt(600);
 				powerUpPositionY = rndGenerator.nextInt(400);
-				powerUpList.add(new PowerUp(powerUpPositionX, powerUpPositionY,
-						new Image("res/Coins11.jpg")));
+				powerUpList.add(new PowerUp(powerUpPositionX, powerUpPositionY,powerUp));
 			}
 			if (takenPowerUp()) {
 				score += 1000000000;
 			}
-
-			// For illustrate purpose only.
-			score++;
-			if (score % 500 == 0) {
+			
+			
+			if (score % 5000 == 0) {
 				coinPositionX = rndGenerator.nextInt(600);
 				coinPositionY = rndGenerator.nextInt(400);
+				bonusList.add(new BonusCoin(coinPositionX, coinPositionY, coin));
 			}
+			
+			score++;
+//			if (score % 8000 == 0) {
+//				coinPositionX = rndGenerator.nextInt(600);
+//				coinPositionY = rndGenerator.nextInt(400);
+//			}
+			if (takenBonusCoin()) {
+				score += 8000;
+			}
+			
 
 			// Proverka dali geroqt se namira na zemqta ili ne
 			if ((onEarth == true || onCloud == true)
@@ -311,10 +326,17 @@ public class Level_One extends BasicGameState {
 	// PowerUp Draw
 	public void drawPowerUp(GameContainer gc, List<PowerUp> powerUpList) {
 		for (PowerUp powerUp : powerUpList) {
-			powerUp.powerUpImage.draw(powerUp.powerUpX, powerUp.powerUpY);
+			powerUp.powerUpAnimation.draw(powerUp.powerUpX, powerUp.powerUpY);
 		}
 	}
 
+	// PowerUp Draw
+	public void drawBonusCoin(GameContainer gc, List<BonusCoin> bonusCoins) {
+		for (BonusCoin coin : bonusList) {
+			coin.bonusCoinAnimation.draw(coin.coinX, coin.coinY);
+		}
+	}
+		
 	private boolean takenPowerUp() { // Taken Power UP
 		boolean taken = false;
 		PowerUp takenPowerUp = null;
@@ -326,6 +348,24 @@ public class Level_One extends BasicGameState {
 
 				takenPowerUp = powerUp;
 				powerUpList.remove(takenPowerUp);
+
+				taken = true;
+			}
+		}
+		return taken;
+	}
+	
+	private boolean takenBonusCoin() { // Taken Bonus Coins
+		boolean taken = false;
+		BonusCoin takenBonus = null;
+
+		for (BonusCoin coin : bonusList) {
+
+			if (inBox(coin.coinX, coin.coinY, charPositionX - 30,
+					charPositionY, charPositionX + 30, charPositionY + 65)) {
+
+				takenBonus = coin;
+				bonusList.remove(takenBonus);
 
 				taken = true;
 			}
