@@ -342,6 +342,12 @@ public class Level_One extends BasicGameState {
 				for (int i = 0, plusX = 0; i < cloudsNumber; i++, plusX += 80) {	
 					staticClouds.add(new Clouds(CloudX3 + plusX, CloudY3, new Image("res/cloud9.png")));									
 				}
+				
+				cloudsNumber = 3 + rndGenerator.nextInt(2);
+				
+				for (int i = 0, plusX = 0; i < cloudsNumber; i++, plusX += 80) {	
+					staticClouds.add(new Clouds(CloudX3 - 100 + plusX, CloudY3 + 200, new Image("res/cloud9.png")));									
+				}
 
 
 			}
