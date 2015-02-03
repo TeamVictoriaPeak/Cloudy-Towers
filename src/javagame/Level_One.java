@@ -22,10 +22,11 @@ public class Level_One extends BasicGameState {
 			charFallLeft, coin, powerUp;
 	float charPositionX = 400;
 	float charPositionY = 450;
-	float charPositionJump;
+
 
 	float jumpPower = 200;
 	float normalJumpPower = 200;
+	float maxJumpPower = 1200;
 
 	float coinPositionX;
 	float coinPositionY;
@@ -45,18 +46,23 @@ public class Level_One extends BasicGameState {
 			CloudY2 = 200, CloudY3 = 100;
 
 	float EarthY = 450;
+	float onCloudY = 900;
 	float meters = 0;
 
 	boolean isGameOver = false;
 	boolean onEarth = true;
 	boolean onCloud = false;
-	boolean inAir = false;
+    boolean inAir = false;
+	boolean jumping = false;
 	boolean falling = false;
 	boolean pressEsc = false;
 	Random rndGenerator = new Random();
 	int score;
 
 	// tisho
+	
+	int cloudsNumber;
+	
 	int firstFloorCloudX;
 	int firstFloorCloudY;
 
@@ -297,21 +303,38 @@ public class Level_One extends BasicGameState {
 				removingClouds();
 			}
 
-			HeroOnStaticCloud();
 			HeroOnEarth();
+			
+			
+
 
 			// Sazdavane na oblacite
-			if (score % 10000 == 0) {
-				staticClouds.add(new Clouds(CloudX1, CloudY1, new Image(
-						"res/cloud.png")));
-				staticClouds.add(new Clouds(CloudX2, CloudY2, new Image(
-						"res/cloud6.png")));
-				staticClouds.add(new Clouds(CloudX3, CloudY3, new Image(
-						"res/cloud9.png")));
+			if (score % 10000 == 0 && meters >= 0) {
+				
+				cloudsNumber = 3 + rndGenerator.nextInt(3);
+				
+				for (int i = 0, plusX = 0; i < cloudsNumber; i++, plusX += 80) {	
+					staticClouds.add(new Clouds(CloudX1 + plusX, CloudY1, new Image("res/cloud.png")));										
+				}
+					
+				cloudsNumber = 2 + rndGenerator.nextInt(3);
+				
+				for (int i = 0, plusX = 0; i < cloudsNumber; i++, plusX += 80) {	
+					staticClouds.add(new Clouds(CloudX2 + plusX, CloudY2, new Image("res/cloud6.png")));										
+				}
+				
+				
+				cloudsNumber = 3 + rndGenerator.nextInt(2);
+				
+				for (int i = 0, plusX = 0; i < cloudsNumber; i++, plusX += 80) {	
+					staticClouds.add(new Clouds(CloudX3 + plusX, CloudY3, new Image("res/cloud9.png")));									
+				}
+
+
 			}
 
 			// Geroq pada zaedno s oblaka, na koito stoi
-			if (HeroOnStaticCloud() && meters > 10) {
+			if (onCloud && meters > 10) {
 				charPositionY += 0.03;
 			}
 
@@ -342,9 +365,15 @@ public class Level_One extends BasicGameState {
 			// Proverka dali geroqt se namira na zemqta ili ne
 			if ((onEarth == true || onCloud == true)
 					&& (charCurrent != charJumpRight && charCurrent != charJumpLeft)
-					&& !falling) {
+					&& !falling && !jumping) {
+				
+				
+				// proverka dali geroq pada ot oblaka
+				if (onCloud) {
+					isHeroStillOnCloud();
+				}
 
-				// Animaicii kogato geroqt e na zemqta
+				// Animaicii kogato geroqt e na zemqta ili na oblak
 				if (input.isKeyDown(input.KEY_RIGHT) && charPositionX < 744) {
 
 					if (charCurrent == charMoveRight) {
@@ -361,6 +390,7 @@ public class Level_One extends BasicGameState {
 					charCurrent = charStillRight;
 					jumpPower = normalJumpPower;
 				}
+				
 				if (input.isKeyDown(input.KEY_LEFT) && charPositionX > 0) {
 
 					if (charCurrent == charMoveLeft) {
@@ -377,100 +407,139 @@ public class Level_One extends BasicGameState {
 					charCurrent = charStillLeft;
 					jumpPower = normalJumpPower;
 				}
+				
 				if (input.isKeyDown(input.KEY_SPACE)
 						&& (charCurrent == charStillRight || charCurrent == charMoveRight)) {
 					charCurrent = charJumpRight;
-					charPositionJump = charPositionY - jumpPower;
-					inAir = true;
+
+					jumping = true;
 				}
 				if (input.isKeyDown(input.KEY_SPACE)
 						&& (charCurrent == charStillLeft || charCurrent == charMoveLeft)) {
 					charCurrent = charJumpLeft;
-					charPositionJump = charPositionY - jumpPower;
-					inAir = true;
+
+					jumping = true;
 				}
 
-			} else {
+			} else { // Animacii kogato geroqt ska4a:
 
-				// Animacii kogato geroqt ska4a
-				if (charPositionY <= charPositionJump) {
+
+
+				
+				
+				// Proverka dali 4ove4eto trqbava da po4ne da pada
+				if (jumpPower <= 0) {
 					falling = true;
-					inAir = false;
+					jumping = false;
 				}
+				
+				
+
+				
 				if (input.isKeyDown(input.KEY_RIGHT)
-						&& (charPositionY >= charPositionJump) && inAir
+						&& jumping
 						&& charPositionX < 744) {
 					charCurrent = charJumpRight;
 					charPositionX += g * 0.5;
 					charPositionY -= g * 0.3;
+					
+					jumpPower -= g * 0.3;
+					
 				} else if ((!(input.isKeyDown(input.KEY_RIGHT)) || charPositionX >= 744)
-						&& (charPositionY >= charPositionJump)
-						&& inAir
+						&& jumping
 						&& charCurrent == charJumpRight) {
 					charCurrent = charJumpRight;
 					charPositionY -= g * 0.3;
+					
+					jumpPower -= g * 0.3;
 				}
-				if (input.isKeyDown(input.KEY_LEFT)
-						&& (charPositionY >= charPositionJump) && inAir
+				
+				if (input.isKeyDown(input.KEY_LEFT) && jumping
 						&& charPositionX > 0) {
 					charCurrent = charJumpLeft;
 					charPositionX -= g * 0.5;
 					charPositionY -= g * 0.3;
+					
+					jumpPower -= g * 0.3;
+					
 				} else if ((!(input.isKeyDown(input.KEY_LEFT)) || charPositionX <= 0)
-						&& (charPositionY >= charPositionJump)
-						&& inAir
+						&& jumping
 						&& charCurrent == charJumpLeft) {
 					charCurrent = charJumpLeft;
 					charPositionY -= g * 0.3;
+					
+					jumpPower -= g * 0.3;
 				}
 
 				// Geroqt moje da ska4a dokato e na oblak
-				if (input.isKeyDown(input.KEY_SPACE) && HeroOnStaticCloud()) {
-					charCurrent = charJumpRight;
-					charPositionJump = charPositionY - jumpPower;
-					inAir = true;
-				}
-				if (input.isKeyDown(input.KEY_SPACE) && HeroOnStaticCloud()) {
-					charCurrent = charJumpLeft;
-					charPositionJump = charPositionY - jumpPower;
-					inAir = true;
-				}
-
-				if (input.isKeyDown(input.KEY_RIGHT) && HeroOnStaticCloud()) {
-
-					if (charCurrent == charMoveRight) {
-						jumpPower += 0.2;
-					} else {
-						jumpPower = normalJumpPower;
-					}
-
-					charCurrent = charMoveRight;
-					charPositionX += g * 0.5;
-
-				} else if (charCurrent == charMoveRight
-						&& (!(input.isKeyDown(input.KEY_RIGHT)) && HeroOnStaticCloud())) {
-					charCurrent = charStillRight;
-					jumpPower = normalJumpPower;
-				}
-				if (input.isKeyDown(input.KEY_LEFT) && HeroOnStaticCloud()) {
-
-					if (charCurrent == charMoveLeft) {
-						jumpPower += 0.2;
-					} else {
-						jumpPower = normalJumpPower;
-					}
-
-					charCurrent = charMoveLeft;
-					charPositionX -= g * 0.5;
-
-				} else if (charCurrent == charMoveLeft
-						&& (!(input.isKeyDown(input.KEY_LEFT)) && HeroOnStaticCloud())) {
-					charCurrent = charStillLeft;
-					jumpPower = normalJumpPower;
-				}
+//				if (input.isKeyDown(input.KEY_SPACE) && HeroOnStaticCloud()) {
+//					charCurrent = charJumpRight;
+//					charPositionJump = charPositionY - jumpPower;
+//					inAir = true;
+//				}
+//				if (input.isKeyDown(input.KEY_SPACE) && HeroOnStaticCloud()) {
+//					charCurrent = charJumpLeft;
+//					charPositionJump = charPositionY - jumpPower;
+//					inAir = true;
+//				}
+//
+//				if (input.isKeyDown(input.KEY_RIGHT) && HeroOnStaticCloud()) {
+//
+//					if (charCurrent == charMoveRight) {
+//						jumpPower += 0.2;
+//					} else {
+//						jumpPower = normalJumpPower;
+//					}
+//
+//					charCurrent = charMoveRight;
+//					charPositionX += g * 0.5;
+//
+//				} else if (charCurrent == charMoveRight
+//						&& (!(input.isKeyDown(input.KEY_RIGHT)) && HeroOnStaticCloud())) {
+//					charCurrent = charStillRight;
+//					jumpPower = normalJumpPower;
+//				}
+//				if (input.isKeyDown(input.KEY_LEFT) && HeroOnStaticCloud()) {
+//
+//					if (charCurrent == charMoveLeft) {
+//						jumpPower += 0.2;
+//					} else {
+//						jumpPower = normalJumpPower;
+//					}
+//
+//					charCurrent = charMoveLeft;
+//					charPositionX -= g * 0.5;
+//
+//				} else if (charCurrent == charMoveLeft
+//						&& (!(input.isKeyDown(input.KEY_LEFT)) && HeroOnStaticCloud())) {
+//					charCurrent = charStillLeft;
+//					jumpPower = normalJumpPower;
+//				}
 
 				// Animacii kogato geroqt pada
 				if (falling) {
+					
+					
+					if (HeroOnStaticCloud()) {
+						onCloud = true;
+					}
+					
+					if ((charCurrent == charJumpRight && !(input
+							.isKeyDown(input.KEY_RIGHT)))
+							|| charPositionX >= 744) {
+						charCurrent = charFallRight;
+						charPositionX += g * 0.5;
+						charPositionY += g * 0.3;
+					}
+					if ((charCurrent == charJumpLeft && !(input
+							.isKeyDown(input.KEY_LEFT))) || charPositionX <= 0) {
+						charCurrent = charFallLeft;
+						charPositionX -= g * 0.5;
+						charPositionY += g * 0.3;
+					}
+					
+					
+					
 					if (input.isKeyDown(input.KEY_RIGHT) && charPositionX < 744) {
 						charCurrent = charFallRight;
 						charPositionX += g * 0.5;
@@ -640,14 +709,32 @@ public class Level_One extends BasicGameState {
 			if (falling && charCurrent == charFallRight) {
 				charCurrent = charStillRight;
 				falling = false;
+				jumpPower = normalJumpPower;
 			}
 
 			if (falling && charCurrent == charFallLeft) {
 				charCurrent = charStillLeft;
 				falling = false;
+				jumpPower = normalJumpPower;
 			}
 		}
 
+	}
+	
+	
+	private void isHeroStillOnCloud() {
+		boolean isStillOnCloud = false;		
+		
+		for (Clouds cloud : staticClouds) {
+			if (inBox(charPositionX, charPositionY, cloud.cloudX - 5, cloud.cloudY - 20, cloud.cloudX + 100, cloud.cloudY)) {
+				isStillOnCloud = true;
+			}						
+		}	
+		
+		if (!isStillOnCloud) {
+			onCloud = false;
+			falling = true;
+		}
 	}
 
 	// Proverqva dali geroqt e varhu oblak
@@ -657,27 +744,46 @@ public class Level_One extends BasicGameState {
 
 		for (Clouds cloud : staticClouds) {
 
-			if (inBox(charPositionX, charPositionY, cloud.cloudX - 5,
-					cloud.cloudY - 30, cloud.cloudX + 100, cloud.cloudY)) {
-
+			if (inBox(charPositionX, charPositionY, cloud.cloudX - 5, cloud.cloudY - 20, cloud.cloudX + 100, cloud.cloudY)) {
 				onStaticCloud = true;
-				onCloud = true;
-
+				
 				if (falling && charCurrent == charFallRight) {
 					charCurrent = charStillRight;
 					falling = false;
 				}
-
+				
 				if (falling && charCurrent == charFallLeft) {
 					charCurrent = charStillLeft;
 					falling = false;
 				}
-			} else {
-				if (onCloud) {
-					onCloud = false;
-					falling = true;
-				}
 			}
+			
+			
+			
+//			if (inBox(charPositionX, charPositionY, cloud.cloudX - 5, cloud.cloudY - 20, cloud.cloudX + 100, cloud.cloudY)) {
+//			if ((charPositionX >= cloud.cloudX - 5 && charPositionX <= cloud.cloudX + 100) && 
+//					((charPositionY >= cloud.cloudY - 20 && charPositionY <= cloud.cloudY) || charPositionY >= onCloudY -5)) {
+//				
+//				onStaticCloud = true;
+//				onCloud = true;
+//				onCloudY = charPositionY;
+//				
+//
+//				if (falling && charCurrent == charFallRight) {
+//					charCurrent = charStillRight;
+//					falling = false;
+//				}
+//
+//				if (falling && charCurrent == charFallLeft) {
+//					charCurrent = charStillLeft;
+//					falling = false;
+//				}
+//			} else {
+//				if (onCloud) {
+//					onCloud = false;
+//					falling = true;
+//				}
+//			}
 		}
 
 		return onStaticCloud;
@@ -688,7 +794,7 @@ public class Level_One extends BasicGameState {
 
 		if (charPositionY <= 0 && !falling) {
 			charPositionY = -30;
-			charPositionJump++;
+			jumpPower--;
 			meters++;
 
 			if (backGroundY < 0) {
