@@ -12,6 +12,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -20,6 +21,7 @@ public class Level_One extends BasicGameState {
 	Animation charCurrent, charMoveRight, charMoveLeft, charJumpRight,
 			charJumpLeft, charStillRight, charStillLeft, charFallRight,
 			charFallLeft, coin, powerUp;
+	private Sound jumpSound;
 	float charPositionX = 400;
 	float charPositionY = 450;
 
@@ -144,6 +146,7 @@ public class Level_One extends BasicGameState {
 		charFallRight = new Animation(fallRight, 150);
 		charFallLeft = new Animation(fallLeft, 150);
 		charCurrent = charStillRight;
+		jumpSound = new Sound("/res/Jump.wav");
 		coin = new Animation(bonus, 150);
 		powerUp = new Animation(wings, 150);
 
@@ -411,13 +414,13 @@ public class Level_One extends BasicGameState {
 				if (input.isKeyDown(input.KEY_SPACE)
 						&& (charCurrent == charStillRight || charCurrent == charMoveRight)) {
 					charCurrent = charJumpRight;
-
+					jumpSound.play();
 					jumping = true;
 				}
 				if (input.isKeyDown(input.KEY_SPACE)
 						&& (charCurrent == charStillLeft || charCurrent == charMoveLeft)) {
 					charCurrent = charJumpLeft;
-
+					jumpSound.play();
 					jumping = true;
 				}
 
