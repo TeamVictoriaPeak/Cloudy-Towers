@@ -20,10 +20,12 @@ public class Menu extends BasicGameState{
 	Image instructions;
 	Image exitGame;
 	Image logo;
+	Image pauseMusic;
 	UnicodeFont uFont;
 	private Music music;
 	
 	int MouseX, MouseY;
+	boolean checkMusic = false;
 	
 	
 	public Menu(int state) {
@@ -45,6 +47,7 @@ public class Menu extends BasicGameState{
 		instructions = new Image("res/Button-Help-icon.png");
 		exitGame = new Image("res/Button-Close-icon.png");
 		logo = new Image("res/cloudytower.png");
+		pauseMusic = new Image("res/Button-Pause-icon.png");
 		Font font = new Font("Serif",Font.PLAIN,20);
 		uFont = new UnicodeFont(font, font.getSize(),font.isBold(), font.isItalic());
 		music = new Music("res/Happy_Background_Music_-_Sweet_by_Sophonic.wav");
@@ -68,6 +71,7 @@ public class Menu extends BasicGameState{
 		g.drawString("Instructions",90 , 445);
 		exitGame.draw(30,530);
 		g.drawString("Exit Game",90,545);
+		pauseMusic.draw(700,550);
 		
 	}
 
@@ -96,8 +100,14 @@ public class Menu extends BasicGameState{
 				System.exit(0);
 			}
 		}
+		if ((posX > 700) && (posX < 730) && ((posY > 20) && (posY < 50 ))){
+			if (Mouse.isButtonDown(0)) {
+				music.pause();
+				checkMusic = true;
+			}
+		}
 	}
-	
+		
 	public boolean inBox(int x, int y, int xSmall, int ySmall, int xBig, int yBig) {
 		return (x >= xSmall && x <= xBig) && (y >= ySmall && y <= yBig);
 	}
