@@ -19,12 +19,13 @@ public class Level_One extends BasicGameState {
 
 	Animation charCurrent, charMoveRight, charMoveLeft, charJumpRight,
 			charJumpLeft, charStillRight, charStillLeft, charFallRight,
-			charFallLeft, coin;
+			charFallLeft, coin, powerUp;
 	float charPositionX = 400;
 	float charPositionY = 450;
 	float charPositionJump;
-	float coinPositionX = -70;
-	float coinPositionY = -70;
+	
+	float coinPositionX;
+	float coinPositionY;
 
 	float powerUpPositionX;
 	float powerUpPositionY;
@@ -72,7 +73,7 @@ public class Level_One extends BasicGameState {
 	// tisho
 
 	List<PowerUp> powerUpList = new LinkedList<PowerUp>();
-
+	List<BonusCoin> bonusList = new LinkedList<BonusCoin>();
 	List<Clouds> removedClouds = new LinkedList<Clouds>();
 	List<Clouds> staticClouds = new LinkedList<Clouds>();
 
@@ -121,6 +122,8 @@ public class Level_One extends BasicGameState {
 		Image[] bonus = { new Image("res/Coins_1.png"),
 				new Image("res/Coins_2.png"), new Image("res/Coins_3.png"),
 				new Image("res/Coins_4.png"), new Image("res/Coins_5.png") };
+		Image[] wings = { new Image("res/wings-1.png"), 
+				new Image("res/wings-2.png"),new Image("res/wings-3.png") };
 
 		// Sazdavane na animacii ot masivite ot kartinki
 		charMoveRight = new Animation(runRight, 150);
@@ -133,6 +136,7 @@ public class Level_One extends BasicGameState {
 		charFallLeft = new Animation(fallLeft, 150);
 		charCurrent = charStillRight;
 		coin = new Animation(bonus, 150);
+		powerUp = new Animation(wings, 150);
 
 		gameOver = new Image("res/GameOver.png");
 
@@ -171,6 +175,8 @@ public class Level_One extends BasicGameState {
 		background.draw(0, backGroundY);
 
 		drawPowerUp(gc, powerUpList);
+		
+		drawBonusCoin(gc, bonusList);
 
 		drawStaticClouds(gc, staticClouds);
 
@@ -178,7 +184,7 @@ public class Level_One extends BasicGameState {
 		// Cloud.draw(CloudX2, CloudY2);
 		// Cloud.draw(CloudX3, CloudY3);
 
-		coin.draw(coinPositionX, coinPositionY);
+		//coin.draw(coinPositionX, coinPositionY);
 
 		// Printirane na 4ove4eto na ekrana, zaedno s negovite koordinati
 		charCurrent.draw(charPositionX, charPositionY);
@@ -318,22 +324,25 @@ public class Level_One extends BasicGameState {
 			if (HeroOnStaticCloud() && meters > 100) {
 				charPositionY += 0.03;
 			}
+			
+			score++;
 
 			if (score % 20000 == 0) {
 				powerUpPositionX = rndGenerator.nextInt(600);
 				powerUpPositionY = rndGenerator.nextInt(400);
-				powerUpList.add(new PowerUp(powerUpPositionX, powerUpPositionY,
-						new Image("res/Coins11.jpg")));
+				powerUpList.add(new PowerUp(powerUpPositionX, powerUpPositionY, powerUp));
 			}
 			if (takenPowerUp()) {
 				score += 10_000;
 			}
 
-			// For illustrate purpose only.
-			score++;
-			if (score % 500 == 0) {
+			if (score % 5000 == 0) {
 				coinPositionX = rndGenerator.nextInt(600);
 				coinPositionY = rndGenerator.nextInt(400);
+				bonusList.add(new BonusCoin(coinPositionX, coinPositionY, coin));
+			}
+			if (takenBonusCoin()) {
+				score += 500;
 			}
 
 			// Proverka dali geroqt se namira na zemqta ili ne
@@ -522,7 +531,7 @@ public class Level_One extends BasicGameState {
 	// PowerUp Draw
 	public void drawPowerUp(GameContainer gc, List<PowerUp> powerUpList) {
 		for (PowerUp powerUp : powerUpList) {
-			powerUp.powerUpImage.draw(powerUp.powerUpX, powerUp.powerUpY);
+			powerUp.powerUpAnimation.draw(powerUp.powerUpX, powerUp.powerUpY);
 		}
 	}
 
@@ -546,6 +555,35 @@ public class Level_One extends BasicGameState {
 		}
 		return taken;
 	}
+	
+	// BonusCoin Draw
+		public void drawBonusCoin(GameContainer gc, List<BonusCoin> bonusList) {
+			for (BonusCoin coin : bonusList) {
+				coin.bonusCoinAnimation.draw(coin.coinX, coin.coinY);
+			}
+		}
+
+		// Taken BonusCoin
+		private boolean takenBonusCoin() {
+			boolean taken = false;
+			BonusCoin takenBonusCoin = null;
+
+			for (BonusCoin coin : bonusList) {
+
+				if (inBox(coin.coinX, coin.coinY, charPositionX - 30,
+						charPositionY, charPositionX + 30, charPositionY + 65)) {
+
+					takenBonusCoin = coin;
+					bonusList.remove(takenBonusCoin);
+
+					taken = true;
+
+					return taken;
+				}
+			}
+			return taken;
+		}
+
 
 	// Proverqva dali geroqt e na zemqta
 	private void HeroOnEarth() {

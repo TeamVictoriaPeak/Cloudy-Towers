@@ -1,19 +1,19 @@
 package javagame;
 
-import org.newdawn.slick.Image;
+import org.newdawn.slick.Animation;
 
 public class PowerUp {
 
 	float powerUpX;
 	float powerUpY;
 	
-	Image powerUpImage; 
+	Animation powerUpAnimation; 
 	
-	public PowerUp(float powerUpX,float powerUpY,Image powerUpAnimation){
+	public PowerUp(float powerUpX,float powerUpY,Animation powerUpAnimation){
 		
 		this.powerUpX = powerUpX;
 		this.powerUpY = powerUpY;
-		this.powerUpImage = powerUpAnimation;
+		this.powerUpAnimation = powerUpAnimation;
 				
 	}
 	
