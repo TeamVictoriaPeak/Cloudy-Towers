@@ -528,13 +528,11 @@ public class Level_One extends BasicGameState {
 							.isKeyDown(input.KEY_RIGHT)))
 							|| charPositionX >= 744) {
 						charCurrent = charFallRight;
-						charPositionX += g * 0.5;
 						charPositionY += g * 0.3;
 					}
 					if ((charCurrent == charJumpLeft && !(input
 							.isKeyDown(input.KEY_LEFT))) || charPositionX <= 0) {
 						charCurrent = charFallLeft;
-						charPositionX -= g * 0.5;
 						charPositionY += g * 0.3;
 					}
 					
