@@ -25,7 +25,6 @@ public class Menu extends BasicGameState{
 	private Music music;
 	
 	int MouseX, MouseY;
-	boolean checkMusic = false;
 	
 	
 	public Menu(int state) {
@@ -103,7 +102,6 @@ public class Menu extends BasicGameState{
 		if ((posX > 700) && (posX < 730) && ((posY > 20) && (posY < 50 ))){
 			if (Mouse.isButtonDown(0)) {
 				music.pause();
-				checkMusic = true;
 			}
 		}
 	}

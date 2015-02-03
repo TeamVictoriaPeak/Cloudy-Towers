@@ -38,7 +38,7 @@ package javagame;
 			forward = new Image("res/Button-Fast-Forward-icon.png");
 			hero = new Image("res/Run_1.png");
 			coins = new Image("res/Coins_1.png");
-			wings = new Image("res/PowerUp.png");
+			wings = new Image("res/wings-3.png");
 			logo = new Image("res/1112.png");
 			Font font = new Font("Serif",Font.PLAIN , 20);
 			uFont = new UnicodeFont(font, font.getSize(), font.isBold(), font.isItalic());
@@ -51,9 +51,9 @@ package javagame;
 			//g.setFont(uFont);
 			g.setColor(Color.darkGray);
 			backGround.draw();
-			g.drawString("You are student in SoftUni.You must go through many difficulties to accomplish ", 30, 150);
-			g.drawString("your education.Jump on the clouds to reach the top.", 130, 170);
-			g.drawString("We will give you small gifts to help you.", 170, 190);
+			g.drawString("You are student in SoftUni.You must go through a lot of difficulties to accomplish", 30, 150);
+			g.drawString("your education.Jump on the clouds to reach the top.We will", 130, 170);
+			g.drawString("give you small gifts to help you during your journey.", 165, 190);
 			logo.draw(100,20);
 			back.draw(550,540);
 			forward.draw(650,540);
@@ -62,7 +62,7 @@ package javagame;
 			coins.draw(30,370);
 			g.drawString("- Grab the coin and you will get bonus 10 pts", 100, 388);
 			wings.draw(30,460);
-			g.drawString("- Grab the wings and you will get power jump", 100, 480);
+			g.drawString("- Grab the wings and you will gain boost on your jump", 100, 480);
 			
 		}
 		public void update(GameContainer gc, StateBasedGame sbg, int g)
