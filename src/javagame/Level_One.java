@@ -26,6 +26,7 @@ public class Level_One extends BasicGameState {
 
 	float jumpPower = 200;
 	float normalJumpPower = 200;
+	float maxJumpPower = 1200;
 
 	float coinPositionX;
 	float coinPositionY;
@@ -45,6 +46,7 @@ public class Level_One extends BasicGameState {
 			CloudY2 = 200, CloudY3 = 100;
 
 	float EarthY = 450;
+	float onCloudY;
 	float meters = 0;
 
 	boolean isGameOver = false;
@@ -57,6 +59,9 @@ public class Level_One extends BasicGameState {
 	int score;
 
 	// tisho
+	
+	int cloudsNumber;
+	
 	int firstFloorCloudX;
 	int firstFloorCloudY;
 
@@ -297,17 +302,36 @@ public class Level_One extends BasicGameState {
 				removingClouds();
 			}
 
-			HeroOnStaticCloud();
 			HeroOnEarth();
+			
+			
+			if (HeroOnStaticCloud()) {
+				onEarth = true;			
+			}
 
 			// Sazdavane na oblacite
-			if (score % 10000 == 0) {
-				staticClouds.add(new Clouds(CloudX1, CloudY1, new Image(
-						"res/cloud.png")));
-				staticClouds.add(new Clouds(CloudX2, CloudY2, new Image(
-						"res/cloud6.png")));
-				staticClouds.add(new Clouds(CloudX3, CloudY3, new Image(
-						"res/cloud9.png")));
+			if (score % 10000 == 0 && meters >= 0) {
+				
+				cloudsNumber = 3 + rndGenerator.nextInt(3);
+				
+				for (int i = 0, plusX = 0; i < cloudsNumber; i++, plusX += 80) {	
+					staticClouds.add(new Clouds(CloudX1 + plusX, CloudY1, new Image("res/cloud.png")));										
+				}
+					
+				cloudsNumber = 2 + rndGenerator.nextInt(3);
+				
+				for (int i = 0, plusX = 0; i < cloudsNumber; i++, plusX += 80) {	
+					staticClouds.add(new Clouds(CloudX2 + plusX, CloudY2, new Image("res/cloud6.png")));										
+				}
+				
+				
+				cloudsNumber = 3 + rndGenerator.nextInt(2);
+				
+				for (int i = 0, plusX = 0; i < cloudsNumber; i++, plusX += 80) {	
+					staticClouds.add(new Clouds(CloudX3 + plusX, CloudY3, new Image("res/cloud9.png")));									
+				}
+
+
 			}
 
 			// Geroq pada zaedno s oblaka, na koito stoi
@@ -657,11 +681,12 @@ public class Level_One extends BasicGameState {
 
 		for (Clouds cloud : staticClouds) {
 
-			if (inBox(charPositionX, charPositionY, cloud.cloudX - 5,
-					cloud.cloudY - 30, cloud.cloudX + 100, cloud.cloudY)) {
+			if (inBox(charPositionX, charPositionY, cloud.cloudX - 5, cloud.cloudY - 20, cloud.cloudX + 100, cloud.cloudY)) {
 
 				onStaticCloud = true;
 				onCloud = true;
+				
+				
 
 				if (falling && charCurrent == charFallRight) {
 					charCurrent = charStillRight;
