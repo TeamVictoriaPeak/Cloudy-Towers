@@ -165,13 +165,13 @@ public class Level_One extends BasicGameState {
 		powerUp = new Animation(wings, 150);
 
 		gameOver = new Image("res/GameOver.png");
-		gameWon = new Image("res/WinScreen.png");
+		gameWon = new Image("res/emo-01.jpg");
 
 		background = new Image("res/background.png");
 
 
 		pauseWindow = new Image("res/GamePauseMenu.png");
-		// quitGame = new Image("res/Button-Turn-Off-icon.png");
+		quitGame = new Image("res/Button-Turn-Off-icon.png");
 		// resumeGame = new Image("res/Button-Play-icon.png");
 
 		// tisho
@@ -251,7 +251,8 @@ public class Level_One extends BasicGameState {
 		}
 		
 		if (isGameWon && (charCurrent == charStillLeft || charCurrent == charStillRight) && onEarth && !onCloud) {
-			gameWon.draw(80, 50);
+			gameWon.draw();
+			quitGame.draw(40,520);
 			wonScreen = true;
 		}
 	}
@@ -305,7 +306,7 @@ public class Level_One extends BasicGameState {
 			}
 			
 
-			// Heroqt umira
+			// Geroqt umira
 			if (charPositionY >= 650) {
 				isGameOver = true;
 			}
@@ -582,8 +583,8 @@ public class Level_One extends BasicGameState {
 			// Pri prevartane na igrata
 			if (wonScreen) {
 				// Izlizane ot igrata
-				if ((posX > 100) && (posX < 600)
-						&& ((posY > 100) && (posY < 450))) {
+				if ((posX > 40) && (posX < 90)
+						&& ((posY > 30) && (posY < 80))) {
 					if (Mouse.isButtonDown(0)) {
 						System.exit(0);
 					}
