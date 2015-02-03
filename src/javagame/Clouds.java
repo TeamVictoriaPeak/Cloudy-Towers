@@ -4,15 +4,15 @@ import org.newdawn.slick.Image;
 
 public class Clouds{
 	
-	int cloudX;
-	int cloudY;
-	Image cloud;
+	float cloudX;
+	float cloudY;
+	Image cloudImage;
 	
-	public Clouds(int cloudX, int cloudY, Image cloud) {
+	public Clouds(float cloudX, float cloudY, Image cloudImage) {
 		
 		this.cloudX = cloudX;
 		this.cloudY = cloudY;
-		this.cloud = cloud;
+		this.cloudImage = cloudImage;
 	}
 	
 }
