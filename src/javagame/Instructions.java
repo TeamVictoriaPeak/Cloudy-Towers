@@ -53,7 +53,7 @@ package javagame;
 			backGround.draw();
 			g.drawString("You are student in SoftUni.You must go through many difficulties to accomplish ", 30, 150);
 			g.drawString("your education.Jump on the clouds to reach the top.", 130, 170);
-			g.drawString("We will give you small gifts to help you", 170, 190);
+			g.drawString("We will give you small gifts to help you.", 170, 190);
 			logo.draw(100,20);
 			back.draw(550,540);
 			forward.draw(650,540);
