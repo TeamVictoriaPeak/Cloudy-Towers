@@ -19,12 +19,13 @@ public class Level_One extends BasicGameState {
 
 	Animation charCurrent, charMoveRight, charMoveLeft, charJumpRight,
 			charJumpLeft, charStillRight, charStillLeft, charFallRight,
-			charFallLeft, coin;
+			charFallLeft, coin, powerUp;
 	float charPositionX = 400;
 	float charPositionY = 450;
 	float charPositionJump;
-	float coinPositionX = -70;
-	float coinPositionY = -70;
+	
+	float coinPositionX;
+	float coinPositionY;
 
 	float powerUpPositionX;
 	float powerUpPositionY;
@@ -58,7 +59,6 @@ public class Level_One extends BasicGameState {
 		
 		int fourthFloorCloudX;
 		int fourthFloorCloudY;
-		
 		Image firstFloorCloud, secondFloorCloud, thirdFloorCloud, fourthFloorCloud, moveCloud, moveCloud2;
 		
 		private float  moveCloudX, moveCloudY;
@@ -66,6 +66,7 @@ public class Level_One extends BasicGameState {
 	// tisho
 
 	List<PowerUp> powerUpList = new LinkedList<PowerUp>();
+	List<BonusCoin> bonusList = new LinkedList<BonusCoin>();
 
 	// -------------------------------------------------------
 	// Novite metodi se sazdavat POD metoda UPDATE!
@@ -113,6 +114,8 @@ public class Level_One extends BasicGameState {
 		Image[] bonus = { new Image("res/Coins_1.png"),
 				new Image("res/Coins_2.png"), new Image("res/Coins_3.png"),
 				new Image("res/Coins_4.png"), new Image("res/Coins_5.png") };
+		Image[] wings = { new Image("/res/wings-1.png"),
+				 new Image("/res/wings-2.png"), new Image("/res/wings-3.png") };
 
 		// Sazdavane na animacii ot masivite ot kartinki
 		charMoveRight = new Animation(runRight, 150);
@@ -125,27 +128,35 @@ public class Level_One extends BasicGameState {
 		charFallLeft = new Animation(fallLeft, 150);
 		charCurrent = charStillRight;
 		coin = new Animation(bonus, 150);
+		powerUp = new Animation(wings, 150);
 
 		background = new Image("res/background.png");
+		//Cloud = new Image("res/cloud.png");
+		
+		
 		
 		pauseWindow = new Image("res/GamePauseMenu.png");
 //		quitGame = new Image("res/Button-Turn-Off-icon.png");
 //		resumeGame = new Image("res/Button-Play-icon.png");
 		
 		// tisho
-			firstFloorCloud = new Image("res/firstFloorCloud.png");
-			secondFloorCloud = new Image("res/secondFloorCloud.png");
-			thirdFloorCloud = new Image("res/thirdFloorCloud.png");
-			fourthFloorCloud = new Image("res/fourthFloorCloud.png");
+			firstFloorCloud = new Image("res/cloud6.png");
+			secondFloorCloud = new Image("res/cloud8.png");
+			thirdFloorCloud = new Image("res/cloud4.png");
+			fourthFloorCloud = new Image("res/cloud9.png");
 			
 			moveCloud = new Image("res/moveCloud.png");
 			moveCloud2 = new Image("res/moveCloud2.png");
+		
 		// tisho
-			moveCloudX = 200;
-			moveCloudY = 150;
+		
+		// tisho
+				moveCloudX = 200;
+				moveCloudY = 150;
 				
-			moveCloud2X = 200;
-			moveCloud2Y = 400;	
+				moveCloud2X = 200;
+				moveCloud2Y = 400;
+				
 		// tisho
 		
 		
@@ -158,33 +169,40 @@ public class Level_One extends BasicGameState {
 		background.draw();
 
 		drawPowerUp(gc, powerUpList);
-		
+		drawBonusCoin(gc, bonusList);
+
+//		Cloud.draw(CloudX1, CloudY1);
+//		Cloud.draw(CloudX2, CloudY2);
+//		Cloud.draw(CloudX3, CloudY3);
 		coin.draw(coinPositionX, coinPositionY);
 
 		// Printirane na 4ove4eto na ekrana, zaedno s negovite koordinati
 		charCurrent.draw(charPositionX, charPositionY);
-		
-		
 		// tisho
-			firstFloorCloud.draw(firstFloorCloudX + 20, firstFloorCloudY + 300);
-			firstFloorCloud.draw(firstFloorCloudX + 100, firstFloorCloudY + 300);
-			firstFloorCloud.draw(firstFloorCloudX + 580, firstFloorCloudY + 300);
-			firstFloorCloud.draw(firstFloorCloudX + 660, firstFloorCloudY + 300);
-			
-			secondFloorCloud.draw(secondFloorCloudX + 400, secondFloorCloudY + 180);
-			secondFloorCloud.draw(secondFloorCloudX + 470, secondFloorCloudY + 180);
-			secondFloorCloud.draw(secondFloorCloudX + 540, secondFloorCloudY + 180);
-			
-			thirdFloorCloud.draw(thirdFloorCloudX + 10, thirdFloorCloudY + 100, 96, 96);
-			thirdFloorCloud.draw(thirdFloorCloudX + 55, thirdFloorCloudY + 100, 96, 96);
-			
-			fourthFloorCloud.draw(fourthFloorCloudX + 300, fourthFloorCloudY + 30, 100, 96);
-			fourthFloorCloud.draw(fourthFloorCloudX + 350, fourthFloorCloudY + 30, 100, 96);
-			fourthFloorCloud.draw(fourthFloorCloudX + 550, fourthFloorCloudY + 30, 100, 96);
-			fourthFloorCloud.draw(fourthFloorCloudX + 600, fourthFloorCloudY + 30, 100, 96);
-			
-			moveCloud.draw(moveCloudX ,moveCloudY, 85, 85);
-			moveCloud2.draw(moveCloud2X ,moveCloud2Y, 85, 85);
+		firstFloorCloud.draw(firstFloorCloudX + 20, firstFloorCloudY + 300);
+		firstFloorCloud.draw(firstFloorCloudX + 100, firstFloorCloudY + 300);
+		firstFloorCloud.draw(firstFloorCloudX + 580, firstFloorCloudY + 300);
+		firstFloorCloud.draw(firstFloorCloudX + 660, firstFloorCloudY + 300);
+		
+		
+		secondFloorCloud.draw(secondFloorCloudX + 400, secondFloorCloudY + 180);
+		secondFloorCloud.draw(secondFloorCloudX + 470, secondFloorCloudY + 180);
+		secondFloorCloud.draw(secondFloorCloudX + 540, secondFloorCloudY + 180);
+		
+		
+		thirdFloorCloud.draw(thirdFloorCloudX + 10, thirdFloorCloudY + 100, 96, 96);
+		thirdFloorCloud.draw(thirdFloorCloudX + 55, thirdFloorCloudY + 100, 96, 96);
+		//thirdFloorCloud.draw(thirdFloorCloudX + 200, thirdFloorCloudY + 150, 80, 80);
+		
+		
+		
+		fourthFloorCloud.draw(fourthFloorCloudX + 300, fourthFloorCloudY + 30, 100, 96);
+		fourthFloorCloud.draw(fourthFloorCloudX + 350, fourthFloorCloudY + 30, 100, 96);
+		fourthFloorCloud.draw(fourthFloorCloudX + 550, fourthFloorCloudY + 30, 100, 96);
+		fourthFloorCloud.draw(fourthFloorCloudX + 600, fourthFloorCloudY + 30, 100, 96);
+		
+		moveCloud.draw(moveCloudX ,moveCloudY, 85, 85);
+		moveCloud2.draw(moveCloud2X ,moveCloud2Y, 85, 85);
 		//tisho
 		
 		
@@ -215,23 +233,29 @@ public class Level_One extends BasicGameState {
 			throws SlickException {
 		
 		// tisho
-			moveCloudX += 0.04 * g;
-			if(moveCloudX > 400 || moveCloudX < 200) {
-				moveCloudX = 200;
-				
-			}
-			
-			moveCloud2Y -= 0.04 * g;
-			if(moveCloud2Y < 200) {
-				moveCloud2Y = 400;
-				
-			}
+		moveCloudX += 0.04 * g;
+		//moveCloudY -= 0.01 * g;
+		if(moveCloudX > 400 || moveCloudX < 200) {
+			moveCloudX = 200;
+			//moveCloudY = 200;
+		}
 		
-			fourthFloorCloudX += 0.18 * g;
-			if(fourthFloorCloudX > 700) {
-				fourthFloorCloudX = 20;
-				
-			}
+		moveCloud2Y -= 0.04 * g;
+		
+		if(moveCloud2Y < 200) {
+			moveCloud2Y = 400;
+			
+		}
+		
+		
+		
+		fourthFloorCloudX += 0.18 * g;
+		if(fourthFloorCloudX > 700) {
+			fourthFloorCloudX = 20;
+			
+		}
+		
+		
 		// tisho
 		
 		
@@ -254,23 +278,28 @@ public class Level_One extends BasicGameState {
 			
 			HeroOnEarth();
 			HeroOnCloud();
+			
+			score++;
 
 			if (score % 5000 == 0) {
 				powerUpPositionX = rndGenerator.nextInt(600);
 				powerUpPositionY = rndGenerator.nextInt(400);
-				powerUpList.add(new PowerUp(powerUpPositionX, powerUpPositionY,
-						new Image("res/Coins11.jpg")));
+				powerUpList.add(new PowerUp(powerUpPositionX, powerUpPositionY,powerUp));
 			}
 			if (takenPowerUp()) {
 				score += 1000000000;
 			}
-
-			// For illustrate purpose only.
-			score++;
-			if (score % 500 == 0) {
+			
+			
+			if (score % 5000 == 0) {
 				coinPositionX = rndGenerator.nextInt(600);
 				coinPositionY = rndGenerator.nextInt(400);
+				bonusList.add(new BonusCoin(coinPositionX, coinPositionY, coin));
 			}
+			if (takenBonusCoin()) {
+				score += 8000;
+			}
+			
 
 			// Proverka dali geroqt se namira na zemqta ili ne
 			if ((onEarth == true || onCloud == true)
@@ -395,7 +424,7 @@ public class Level_One extends BasicGameState {
 	
 	
 	
-	// Vizualizirane na Score countera
+	//  na Score countera
 	public void drawScore(Graphics g) {
 		g.setColor(Color.white);
 		g.drawString("SCORE " + score, 15, 15);
@@ -404,10 +433,17 @@ public class Level_One extends BasicGameState {
 	// PowerUp Draw
 	public void drawPowerUp(GameContainer gc, List<PowerUp> powerUpList) {
 		for (PowerUp powerUp : powerUpList) {
-			powerUp.powerUpImage.draw(powerUp.powerUpX, powerUp.powerUpY);
+			powerUp.powerUpAnimation.draw(powerUp.powerUpX, powerUp.powerUpY);
 		}
 	}
 
+	// Bonus Coin Draw
+	public void drawBonusCoin(GameContainer gc, List<BonusCoin> bonusCoins) {
+		for (BonusCoin coin : bonusList) {
+			coin.bonusCoinAnimation.draw(coin.coinX, coin.coinY);
+		}
+	}
+		
 	private boolean takenPowerUp() { // Taken Power UP
 		boolean taken = false;
 		PowerUp takenPowerUp = null;
@@ -419,6 +455,24 @@ public class Level_One extends BasicGameState {
 
 				takenPowerUp = powerUp;
 				powerUpList.remove(takenPowerUp);
+
+				taken = true;
+			}
+		}
+		return taken;
+	}
+	
+	private boolean takenBonusCoin() { // Taken Bonus Coins
+		boolean taken = false;
+		BonusCoin takenBonus = null;
+
+		for (BonusCoin coin : bonusList) {
+
+			if (inBox(coin.coinX, coin.coinY, charPositionX - 30,
+					charPositionY, charPositionX + 30, charPositionY + 65)) {
+
+				takenBonus = coin;
+				bonusList.remove(takenBonus);
 
 				taken = true;
 			}
