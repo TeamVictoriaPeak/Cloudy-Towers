@@ -21,12 +21,11 @@ public class Level_One extends BasicGameState {
 	Animation charCurrent, charMoveRight, charMoveLeft, charJumpRight,
 			charJumpLeft, charStillRight, charStillLeft, charFallRight,
 			charFallLeft, coin, powerUp;
-	
+
 	private Sound jumpSound;
-	
+
 	float charPositionX = 400;
 	float charPositionY = 450;
-
 
 	float jumpPower = 200;
 	float normalJumpPower = 200;
@@ -48,36 +47,35 @@ public class Level_One extends BasicGameState {
 	Image quitGame;
 	Image resumeGame;
 	float CloudX1 = 300, CloudX2 = 100, CloudX3 = 500, CloudY1 = 300,
-			CloudY2 = 200, CloudY3 = 100, CloudX4 = 0, CloudY4 = 20, CloudX5 = 350, CloudY5 = - 100, CloudX6 = 0, CloudY6 = - 260, 
-			CloudX7 = + 680, CloudY7 = - 300, CloudX8 = + 270, CloudY8 =  - 450, CloudX9 = + 520 , CloudY9 = - 530, 
-			CloudX10 = + 300, CloudY10 = - 700;
-
+			CloudY2 = 200, CloudY3 = 100, CloudX4 = 0, CloudY4 = 20,
+			CloudX5 = 350, CloudY5 = -100, CloudX6 = 0, CloudY6 = -260,
+			CloudX7 = +680, CloudY7 = -300, CloudX8 = +270, CloudY8 = -450,
+			CloudX9 = +520, CloudY9 = -530, CloudX10 = +300, CloudY10 = -700;
 
 	float EarthY = 450;
 	float onCloudY = 900;
 	float meters = 0;
 
+	boolean firstClouds = true;
+
 	boolean isGameWon = false;
 	boolean isGameOver = false;
 	boolean wonScreen = false;
 	boolean pressEsc = false;
-	
+
 	boolean onEarth = true;
 	boolean onCloud = false;
-    boolean inAir = false;
+	boolean inAir = false;
 	boolean jumping = false;
 	boolean falling = false;
-	
-	
 
-	
 	Random rndGenerator = new Random();
-	int score;
+	float score;
 
 	// tisho
-	
+
 	int cloudsNumber;
-	
+
 	int firstFloorCloudX;
 	int firstFloorCloudY;
 
@@ -161,9 +159,9 @@ public class Level_One extends BasicGameState {
 		charFallRight = new Animation(fallRight, 150);
 		charFallLeft = new Animation(fallLeft, 150);
 		charCurrent = charStillRight;
-		
+
 		jumpSound = new Sound("/res/spin_jump.wav");
-		
+
 		coin = new Animation(bonus, 150);
 		powerUp = new Animation(wings, 150);
 
@@ -171,7 +169,6 @@ public class Level_One extends BasicGameState {
 		gameWon = new Image("res/emo-01.jpg");
 
 		background = new Image("res/background.png");
-
 
 		pauseWindow = new Image("res/GamePauseMenu.png");
 		quitGame = new Image("res/Button-Turn-Off-icon.png");
@@ -200,8 +197,6 @@ public class Level_One extends BasicGameState {
 		drawBonusCoin(gc, bonusList);
 
 		drawStaticClouds(gc, staticClouds);
-
-
 
 		// coin.draw(coinPositionX, coinPositionY);
 
@@ -252,10 +247,12 @@ public class Level_One extends BasicGameState {
 		if (isGameOver) {
 			gameOver.draw(80, 50);
 		}
-		
-		if (isGameWon && (charCurrent == charStillLeft || charCurrent == charStillRight) && onEarth && !onCloud) {
+
+		if (isGameWon
+				&& (charCurrent == charStillLeft || charCurrent == charStillRight)
+				&& onEarth && !onCloud) {
 			gameWon.draw();
-			quitGame.draw(40,520);
+			quitGame.draw(40, 520);
 			wonScreen = true;
 		}
 	}
@@ -288,8 +285,6 @@ public class Level_One extends BasicGameState {
 
 		if (!pressEsc && !isGameOver && !wonScreen) {
 
-
-			
 			gameMovement();
 
 			// -------------------------------------------------------------------------------------------------
@@ -301,13 +296,11 @@ public class Level_One extends BasicGameState {
 			if (input.isKeyPressed(input.KEY_ESCAPE)) {
 				pressEsc = true;
 			}
-			
-			
+
 			// proverqva dali igrata e prevartqna
-			if (meters > 450) {
+			if (meters > 1000) {
 				isGameWon = true;
 			}
-			
 
 			// Geroqt umira
 			if (charPositionY >= 650) {
@@ -315,103 +308,118 @@ public class Level_One extends BasicGameState {
 			}
 
 			// Zapo4va dvijenieto v igrata
-			if (meters > 10) {
+			if (meters > 20) {
 				cloudMovement();
 				removingClouds();
 			}
 
 			HeroOnEarth();
-			
-			
-
 
 			// Sazdavane na oblacite
-			if (score % 10000 == 0 && meters >= 0 && !isGameWon) {
-				
-				//staticClouds.add(new Clouds(CloudX1 , CloudY1, new Image("res/cloud8.png")));	
-				
-				cloudsNumber = 4; //+ rndGenerator.nextInt(3);
-				for (int i = 0, plusX = 0; i < cloudsNumber; i++, plusX += 80) {	
-					staticClouds.add(new Clouds(CloudX1 + plusX, CloudY1, new Image("res/cloud8.png")));										
+			if (staticClouds.size() < 8 && !isGameWon) {
+
+				// staticClouds.add(new Clouds(CloudX1 , CloudY1, new
+				// Image("res/cloud8.png")));
+
+				if (firstClouds) {
+
+					cloudsNumber = 4; // + rndGenerator.nextInt(3);
+					for (int i = 0, plusX = 0; i < cloudsNumber; i++, plusX += 80) {
+						staticClouds.add(new Clouds(CloudX1 + plusX, CloudY1,
+								new Image("res/cloud8.png")));
+					}
+
+					// CloudX2
+					// staticClouds.add(new Clouds(CloudX2 , CloudY2, new
+					// Image("res/cloud6.png")));
+
+					cloudsNumber = 2; // + rndGenerator.nextInt(3);
+					for (int i = 0, plusX = 0; i < cloudsNumber; i++, plusX += 80) {
+						staticClouds.add(new Clouds(CloudX2 + plusX, CloudY2,
+								new Image("res/cloud6.png")));
+					}
 				}
-				
-				// CloudX2
-				//staticClouds.add(new Clouds(CloudX2 , CloudY2, new Image("res/cloud6.png")));	
-				
-				cloudsNumber = 2; //+ rndGenerator.nextInt(3);
-				for (int i = 0, plusX = 0; i < cloudsNumber; i++, plusX += 80) {	
-					staticClouds.add(new Clouds(CloudX2 + plusX, CloudY2, new Image("res/cloud6.png")));										
-				}
-				
 				// CloudX3
-				//staticClouds.add(new Clouds(CloudX3 , CloudY3, new Image("res/cloud9.png")));
-				
-				cloudsNumber = 3; //+ rndGenerator.nextInt(2);
-				for (int i = 0, plusX = 0; i < cloudsNumber; i++, plusX += 80) {	
-					staticClouds.add(new Clouds(CloudX3 + plusX, CloudY3, new Image("res/cloud9.png")));									
+				// staticClouds.add(new Clouds(CloudX3 , CloudY3, new
+				// Image("res/cloud9.png")));
+
+				cloudsNumber = 3; // + rndGenerator.nextInt(2);
+				for (int i = 0, plusX = 0; i < cloudsNumber; i++, plusX += 80) {
+					staticClouds.add(new Clouds(CloudX3 + plusX, CloudY3,
+							new Image("res/cloud9.png")));
 				}
-				
+
 				// CloudX4
-				//staticClouds.add(new Clouds(CloudX4 , CloudY4 , new Image("res/cloud4.png")));	
-				
-				cloudsNumber = 1; //+ rndGenerator.nextInt(2);
-				for (int i = 0, plusX = 0; i < cloudsNumber; i++, plusX += 80) {	
-					staticClouds.add(new Clouds(CloudX4 + plusX, CloudY4 , new Image("res/cloud4.png")));									
+				// staticClouds.add(new Clouds(CloudX4 , CloudY4 , new
+				// Image("res/cloud4.png")));
+
+				cloudsNumber = 1; // + rndGenerator.nextInt(2);
+				for (int i = 0, plusX = 0; i < cloudsNumber; i++, plusX += 80) {
+					staticClouds.add(new Clouds(CloudX4 + plusX, CloudY4,
+							new Image("res/cloud4.png")));
 				}
-				
+				firstClouds = false;
+
 				// CloudX5
-				//staticClouds.add(new Clouds(CloudX5 , CloudY5 , new Image("res/cloud7.png")));	
-				
-				
-				cloudsNumber = 2; //+ rndGenerator.nextInt(3);
-				for (int i = 0, plusX = 0; i < cloudsNumber; i++, plusX += 80) {	
-					staticClouds.add(new Clouds(CloudX5 + plusX, CloudY5 , new Image("res/cloud7.png")));									
+				// staticClouds.add(new Clouds(CloudX5 , CloudY5 , new
+				// Image("res/cloud7.png")));
+
+				cloudsNumber = 2; // + rndGenerator.nextInt(3);
+				for (int i = 0, plusX = 0; i < cloudsNumber; i++, plusX += 80) {
+					staticClouds.add(new Clouds(CloudX5 + plusX, CloudY5,
+							new Image("res/cloud7.png")));
 				}
-				
+
 				// CloudX6
-				//staticClouds.add(new Clouds(CloudX6 , CloudY6 , new Image("res/cloud5.png")));
-				
-				cloudsNumber = 3;  //+ rndGenerator.nextInt(3);
-				for (int i = 0, plusX = 0; i < cloudsNumber; i++, plusX += 80) {	
-					staticClouds.add(new Clouds(CloudX6 + plusX, CloudY6 , new Image("res/cloud5.png")));									
+				// staticClouds.add(new Clouds(CloudX6 , CloudY6 , new
+				// Image("res/cloud5.png")));
+
+				cloudsNumber = 3; // + rndGenerator.nextInt(3);
+				for (int i = 0, plusX = 0; i < cloudsNumber; i++, plusX += 80) {
+					staticClouds.add(new Clouds(CloudX6 + plusX, CloudY6,
+							new Image("res/cloud5.png")));
 				}
-				
-				// CloudX7 
-				//staticClouds.add(new Clouds(CloudX7 , CloudY7 , new Image("res/cloud10.png")));
-				
-				cloudsNumber = 2; //+ rndGenerator.nextInt(1);
-				for (int i = 0, plusX = 0; i < cloudsNumber; i++, plusX += 60) {	
-					staticClouds.add(new Clouds(CloudX7 + plusX, CloudY7 , new Image("res/cloud10.png")));									
+
+				// CloudX7
+				// staticClouds.add(new Clouds(CloudX7 , CloudY7 , new
+				// Image("res/cloud10.png")));
+
+				cloudsNumber = 2; // + rndGenerator.nextInt(1);
+				for (int i = 0, plusX = 0; i < cloudsNumber; i++, plusX += 60) {
+					staticClouds.add(new Clouds(CloudX7 + plusX, CloudY7,
+							new Image("res/cloud10.png")));
 				}
-				
-				
+
 				// CloudX8
-				cloudsNumber = 3; //+ rndGenerator.nextInt(1);
-				for (int i = 0, plusX = 0; i < cloudsNumber; i++, plusX += 60) {	
-				staticClouds.add(new Clouds(CloudX8 + plusX, CloudY8 , new Image("res/cloud8.png")));
-				
+				cloudsNumber = 3; // + rndGenerator.nextInt(1);
+				for (int i = 0, plusX = 0; i < cloudsNumber; i++, plusX += 60) {
+					staticClouds.add(new Clouds(CloudX8 + plusX, CloudY8,
+							new Image("res/cloud8.png")));
+
 				}
-				
-				
+
 				// CloudX9
-				staticClouds.add(new Clouds(CloudX9 , CloudY9 , new Image("res/cloud7.png")));
-				
-				// CloudX10 
-				staticClouds.add(new Clouds(CloudX10 , CloudY10 , new Image("res/moveCloud.png")));
-				
+				staticClouds.add(new Clouds(CloudX9, CloudY9, new Image(
+						"res/cloud7.png")));
 
+				// CloudX10
+				staticClouds.add(new Clouds(CloudX10, CloudY10, new Image(
+						"res/moveCloud.png")));
 
 			}
 
+			
+			
+			
 			// Geroq pada zaedno s oblaka, na koito stoi
-			if (onCloud && meters > 10) {
-				charPositionY += 0.03;
+			if (onCloud && meters > 20) {
+				charPositionY += 0.13;
 			}
 
-			score++;
+			
 
 			// Sazdavane na PowerUp-a
-			if (score % 20000 == 0 && !isGameWon) {
+			if (score % 200 == 0 && !isGameWon  && score > 0) {
 				powerUpPositionX = rndGenerator.nextInt(600);
 				powerUpPositionY = rndGenerator.nextInt(400);
 				powerUpList.add(new PowerUp(powerUpPositionX, powerUpPositionY,
@@ -422,22 +430,21 @@ public class Level_One extends BasicGameState {
 			}
 
 			// Sazdavane na monetkite
-			if (score % 5000 == 0 && !isGameWon) {
+			if (score % 250 == 0 && !isGameWon && score > 0) {
 				coinPositionX = rndGenerator.nextInt(600);
 				coinPositionY = rndGenerator.nextInt(400);
 				bonusList
 						.add(new BonusCoin(coinPositionX, coinPositionY, coin));
 			}
 			if (takenBonusCoin()) {
-				score += 500;
+				score += 50;
 			}
 
 			// Proverka dali geroqt se namira na zemqta ili ne
 			if ((onEarth == true || onCloud == true)
 					&& (charCurrent != charJumpRight && charCurrent != charJumpLeft)
 					&& !falling && !jumping) {
-				
-				
+
 				// proverka dali geroq pada ot oblaka
 				if (onCloud) {
 					isHeroStillOnCloud();
@@ -447,20 +454,20 @@ public class Level_One extends BasicGameState {
 				if (input.isKeyDown(input.KEY_RIGHT) && charPositionX < 744) {
 
 					if (charCurrent == charMoveRight) {
-						jumpPower += 0.2;						
+						jumpPower += 0.2;
 					} else {
 						jumpPower = normalJumpPower;
 					}
 
 					charCurrent = charMoveRight;
-					charPositionX += g * 0.5;					
+					charPositionX += g * 0.5;
 
 				} else if (charCurrent == charMoveRight
 						&& (!(input.isKeyDown(input.KEY_RIGHT)) || charPositionX >= 744)) {
 					charCurrent = charStillRight;
 					jumpPower = normalJumpPower;
 				}
-				
+
 				if (input.isKeyDown(input.KEY_LEFT) && charPositionX > 0) {
 
 					if (charCurrent == charMoveLeft) {
@@ -470,19 +477,19 @@ public class Level_One extends BasicGameState {
 					}
 
 					charCurrent = charMoveLeft;
-					charPositionX -= g * 0.5;		
+					charPositionX -= g * 0.5;
 
 				} else if (charCurrent == charMoveLeft
 						&& (!(input.isKeyDown(input.KEY_LEFT)) || charPositionX <= 0)) {
 					charCurrent = charStillLeft;
 					jumpPower = normalJumpPower;
 				}
-				
+
 				if (input.isKeyDown(input.KEY_SPACE)
 						&& (charCurrent == charStillRight || charCurrent == charMoveRight)) {
 					charCurrent = charJumpRight;
 					jumpSound.play();
-					
+
 					jumping = true;
 				}
 				if (input.isKeyDown(input.KEY_SPACE)
@@ -495,63 +502,51 @@ public class Level_One extends BasicGameState {
 
 			} else { // Animacii kogato geroqt ska4a:
 
-
-
-				
-				
 				// Proverka dali 4ove4eto trqbava da po4ne da pada
 				if (jumpPower <= 0) {
 					falling = true;
 					jumping = false;
 				}
-				
-				
 
-				
-				if (input.isKeyDown(input.KEY_RIGHT)
-						&& jumping
+				if (input.isKeyDown(input.KEY_RIGHT) && jumping
 						&& charPositionX < 744) {
 					charCurrent = charJumpRight;
 					charPositionX += g * 0.5;
-					charPositionY -= g * 0.3;			
-					
+					charPositionY -= g * 0.3;
+
 					jumpPower -= g * 0.3;
-					
+
 				} else if ((!(input.isKeyDown(input.KEY_RIGHT)) || charPositionX >= 744)
-						&& jumping
-						&& charCurrent == charJumpRight) {
+						&& jumping && charCurrent == charJumpRight) {
 					charCurrent = charJumpRight;
 					charPositionY -= g * 0.3;
-					
+
 					jumpPower -= g * 0.3;
 				}
-				
+
 				if (input.isKeyDown(input.KEY_LEFT) && jumping
 						&& charPositionX > 0) {
 					charCurrent = charJumpLeft;
 					charPositionX -= g * 0.5;
 					charPositionY -= g * 0.3;
-					
+
 					jumpPower -= g * 0.3;
-					
+
 				} else if ((!(input.isKeyDown(input.KEY_LEFT)) || charPositionX <= 0)
-						&& jumping
-						&& charCurrent == charJumpLeft) {
+						&& jumping && charCurrent == charJumpLeft) {
 					charCurrent = charJumpLeft;
 					charPositionY -= g * 0.3;
-					
+
 					jumpPower -= g * 0.3;
 				}
 
-
 				// Animacii kogato geroqt pada
 				if (falling) {
-					
-					
+
 					if (HeroOnStaticCloud()) {
 						onCloud = true;
 					}
-					
+
 					if ((charCurrent == charJumpRight && !(input
 							.isKeyDown(input.KEY_RIGHT)))
 							|| charPositionX >= 744) {
@@ -563,9 +558,7 @@ public class Level_One extends BasicGameState {
 						charCurrent = charFallLeft;
 						charPositionY += g * 0.3;
 					}
-					
-					
-					
+
 					if (input.isKeyDown(input.KEY_RIGHT) && charPositionX < 744) {
 						charCurrent = charFallRight;
 						charPositionX += g * 0.5;
@@ -589,8 +582,7 @@ public class Level_One extends BasicGameState {
 				}
 			}
 		} else {
-			
-			
+
 			// pri pusnata pause
 			if (pressEsc) {
 
@@ -617,8 +609,6 @@ public class Level_One extends BasicGameState {
 
 			}
 
-			
-			
 			// Pri zaguba na igrata
 			if (isGameOver) {
 				// Izlizane ot igrata
@@ -629,12 +619,11 @@ public class Level_One extends BasicGameState {
 					}
 				}
 			}
-			
+
 			// Pri prevartane na igrata
 			if (wonScreen) {
 				// Izlizane ot igrata
-				if ((posX > 40) && (posX < 90)
-						&& ((posY > 30) && (posY < 80))) {
+				if ((posX > 40) && (posX < 90) && ((posY > 30) && (posY < 80))) {
 					if (Mouse.isButtonDown(0)) {
 						System.exit(0);
 					}
@@ -650,7 +639,7 @@ public class Level_One extends BasicGameState {
 	// Vizualizirane na Score countera
 	public void drawScore(Graphics g) {
 		g.setColor(Color.white);
-		g.drawString("SCORE " + meters + "  : " + jumpPower, 15, 15);
+		g.drawString("SCORE " + (int) score, 15, 15);
 	}
 
 	// sazdava nepodvijni oblaci
@@ -663,7 +652,9 @@ public class Level_One extends BasicGameState {
 	// Izvar6va spuskaneto na oblacite
 	private void cloudMovement() {
 		for (Clouds cloud : staticClouds) {
-			cloud.cloudY += 0.03;					// 0.03
+			cloud.cloudY += 0.13;
+			meters += 0.0001;
+			score += 0.0001;
 		}
 	}
 
@@ -762,17 +753,17 @@ public class Level_One extends BasicGameState {
 		}
 
 	}
-	
-	
+
 	private void isHeroStillOnCloud() {
-		boolean isStillOnCloud = false;		
-		
+		boolean isStillOnCloud = false;
+
 		for (Clouds cloud : staticClouds) {
-			if (inBox(charPositionX, charPositionY, cloud.cloudX - 5, cloud.cloudY - 20, cloud.cloudX + 100, cloud.cloudY)) {
+			if (inBox(charPositionX, charPositionY, cloud.cloudX - 5,
+					cloud.cloudY - 20, cloud.cloudX + 100, cloud.cloudY)) {
 				isStillOnCloud = true;
-			}						
-		}	
-		
+			}
+		}
+
 		if (!isStillOnCloud) {
 			onCloud = false;
 			falling = true;
@@ -786,30 +777,27 @@ public class Level_One extends BasicGameState {
 
 		for (Clouds cloud : staticClouds) {
 
-			if (inBox(charPositionX, charPositionY, cloud.cloudX - 5, cloud.cloudY - 20, cloud.cloudX + 100, cloud.cloudY)) {
+			if (inBox(charPositionX, charPositionY, cloud.cloudX - 5,
+					cloud.cloudY - 20, cloud.cloudX + 100, cloud.cloudY)) {
 				onStaticCloud = true;
-				
+
 				if (falling && charCurrent == charFallRight) {
 					charCurrent = charStillRight;
 					falling = false;
 					jumpPower = normalJumpPower;
 				}
-				
+
 				if (falling && charCurrent == charFallLeft) {
 					charCurrent = charStillLeft;
 					falling = false;
 					jumpPower = normalJumpPower;
 				}
-			}			
+			}
 		}
 
 		return onStaticCloud;
 	}
 
-	
-	
-	
-	
 	// Proverqva dali geroqt e gore na ekrana
 	private void gameMovement() {
 
@@ -817,6 +805,11 @@ public class Level_One extends BasicGameState {
 			charPositionY = -30;
 			jumpPower--;
 			meters++;
+			score++;
+			
+			for (Clouds cloud : staticClouds) {
+				cloud.cloudY++;
+			}
 
 			if (backGroundY < -650 && !isGameWon) {
 				backGroundY++;
@@ -829,28 +822,29 @@ public class Level_One extends BasicGameState {
 			}
 		}
 
-		
 		// Ako igrata ne e prevartqna
-		if (meters > 10 && backGroundY != -650) {
-			backGroundY += 0.01;
-			EarthY += 0.01;
+		if (meters > 20 && backGroundY != -650) {
+			backGroundY += 0.08;
+			EarthY += 0.08;
+
 		}
 
 		if (backGroundY >= -650 && !isGameWon) {
 			backGroundY = -650;
 		}
-		
+
 		// Ako igrata e prevartqna
 		if (isGameWon && backGroundY != 0) {
-			backGroundY += 0.01;
-			EarthY += 0.01;
+			backGroundY += 0.08;
+			EarthY += 0.08;
+
 		}
-		
+
 		if (backGroundY >= 0 && isGameWon) {
 			backGroundY = 0;
 			EarthY = 500;
 		}
-		
+
 	}
 
 	public boolean inBox(float x, float y, float xSmall, float ySmall,
