@@ -48,7 +48,10 @@ public class Level_One extends BasicGameState {
 	Image quitGame;
 	Image resumeGame;
 	float CloudX1 = 300, CloudX2 = 100, CloudX3 = 500, CloudY1 = 300,
-			CloudY2 = 200, CloudY3 = 100;
+			CloudY2 = 200, CloudY3 = 100, CloudX4 = 0, CloudY4 = 20, CloudX5 = 350, CloudY5 = - 100, CloudX6 = 0, CloudY6 = - 260, 
+			CloudX7 = + 680, CloudY7 = - 300, CloudX8 = + 270, CloudY8 =  - 450, CloudX9 = + 520 , CloudY9 = - 530, 
+			CloudX10 = + 300, CloudY10 = - 700;
+
 
 	float EarthY = 450;
 	float onCloudY = 900;
@@ -325,24 +328,77 @@ public class Level_One extends BasicGameState {
 			// Sazdavane na oblacite
 			if (score % 10000 == 0 && meters >= 0 && !isGameWon) {
 				
-				cloudsNumber = 3 + rndGenerator.nextInt(3);
+				//staticClouds.add(new Clouds(CloudX1 , CloudY1, new Image("res/cloud8.png")));	
 				
+				cloudsNumber = 4; //+ rndGenerator.nextInt(3);
 				for (int i = 0, plusX = 0; i < cloudsNumber; i++, plusX += 80) {	
 					staticClouds.add(new Clouds(CloudX1 + plusX, CloudY1, new Image("res/cloud8.png")));										
 				}
-					
-				cloudsNumber = 2 + rndGenerator.nextInt(3);
 				
+				// CloudX2
+				//staticClouds.add(new Clouds(CloudX2 , CloudY2, new Image("res/cloud6.png")));	
+				
+				cloudsNumber = 2; //+ rndGenerator.nextInt(3);
 				for (int i = 0, plusX = 0; i < cloudsNumber; i++, plusX += 80) {	
 					staticClouds.add(new Clouds(CloudX2 + plusX, CloudY2, new Image("res/cloud6.png")));										
 				}
 				
+				// CloudX3
+				//staticClouds.add(new Clouds(CloudX3 , CloudY3, new Image("res/cloud9.png")));
 				
-				cloudsNumber = 3 + rndGenerator.nextInt(2);
-				
+				cloudsNumber = 3; //+ rndGenerator.nextInt(2);
 				for (int i = 0, plusX = 0; i < cloudsNumber; i++, plusX += 80) {	
 					staticClouds.add(new Clouds(CloudX3 + plusX, CloudY3, new Image("res/cloud9.png")));									
 				}
+				
+				// CloudX4
+				//staticClouds.add(new Clouds(CloudX4 , CloudY4 , new Image("res/cloud4.png")));	
+				
+				cloudsNumber = 1; //+ rndGenerator.nextInt(2);
+				for (int i = 0, plusX = 0; i < cloudsNumber; i++, plusX += 80) {	
+					staticClouds.add(new Clouds(CloudX4 + plusX, CloudY4 , new Image("res/cloud4.png")));									
+				}
+				
+				// CloudX5
+				//staticClouds.add(new Clouds(CloudX5 , CloudY5 , new Image("res/cloud7.png")));	
+				
+				
+				cloudsNumber = 2; //+ rndGenerator.nextInt(3);
+				for (int i = 0, plusX = 0; i < cloudsNumber; i++, plusX += 80) {	
+					staticClouds.add(new Clouds(CloudX5 + plusX, CloudY5 , new Image("res/cloud7.png")));									
+				}
+				
+				// CloudX6
+				//staticClouds.add(new Clouds(CloudX6 , CloudY6 , new Image("res/cloud5.png")));
+				
+				cloudsNumber = 3;  //+ rndGenerator.nextInt(3);
+				for (int i = 0, plusX = 0; i < cloudsNumber; i++, plusX += 80) {	
+					staticClouds.add(new Clouds(CloudX6 + plusX, CloudY6 , new Image("res/cloud5.png")));									
+				}
+				
+				// CloudX7 
+				//staticClouds.add(new Clouds(CloudX7 , CloudY7 , new Image("res/cloud10.png")));
+				
+				cloudsNumber = 2; //+ rndGenerator.nextInt(1);
+				for (int i = 0, plusX = 0; i < cloudsNumber; i++, plusX += 60) {	
+					staticClouds.add(new Clouds(CloudX7 + plusX, CloudY7 , new Image("res/cloud10.png")));									
+				}
+				
+				
+				// CloudX8
+				cloudsNumber = 3; //+ rndGenerator.nextInt(1);
+				for (int i = 0, plusX = 0; i < cloudsNumber; i++, plusX += 60) {	
+				staticClouds.add(new Clouds(CloudX8 + plusX, CloudY8 , new Image("res/cloud8.png")));
+				
+				}
+				
+				
+				// CloudX9
+				staticClouds.add(new Clouds(CloudX9 , CloudY9 , new Image("res/cloud7.png")));
+				
+				// CloudX10 
+				staticClouds.add(new Clouds(CloudX10 , CloudY10 , new Image("res/moveCloud.png")));
+				
 
 
 			}
@@ -391,13 +447,13 @@ public class Level_One extends BasicGameState {
 				if (input.isKeyDown(input.KEY_RIGHT) && charPositionX < 744) {
 
 					if (charCurrent == charMoveRight) {
-						jumpPower += 0.2;
+						jumpPower += 0.2;						
 					} else {
 						jumpPower = normalJumpPower;
 					}
 
 					charCurrent = charMoveRight;
-					charPositionX += g * 0.5;
+					charPositionX += g * 0.5;					
 
 				} else if (charCurrent == charMoveRight
 						&& (!(input.isKeyDown(input.KEY_RIGHT)) || charPositionX >= 744)) {
@@ -414,7 +470,7 @@ public class Level_One extends BasicGameState {
 					}
 
 					charCurrent = charMoveLeft;
-					charPositionX -= g * 0.5;
+					charPositionX -= g * 0.5;		
 
 				} else if (charCurrent == charMoveLeft
 						&& (!(input.isKeyDown(input.KEY_LEFT)) || charPositionX <= 0)) {
@@ -457,7 +513,7 @@ public class Level_One extends BasicGameState {
 						&& charPositionX < 744) {
 					charCurrent = charJumpRight;
 					charPositionX += g * 0.5;
-					charPositionY -= g * 0.3;
+					charPositionY -= g * 0.3;			
 					
 					jumpPower -= g * 0.3;
 					
@@ -607,7 +663,7 @@ public class Level_One extends BasicGameState {
 	// Izvar6va spuskaneto na oblacite
 	private void cloudMovement() {
 		for (Clouds cloud : staticClouds) {
-			cloud.cloudY += 0.03;
+			cloud.cloudY += 0.03;					// 0.03
 		}
 	}
 
