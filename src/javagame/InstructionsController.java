@@ -50,7 +50,6 @@ public class InstructionsController extends BasicGameState {
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
 			throws SlickException {
 		
-		//g.setFont(uFont);
 		g.setColor(Color.darkGray);
 		backGround.draw();
 		gameControllers.draw(200,20);

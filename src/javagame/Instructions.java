@@ -48,7 +48,6 @@ package javagame;
 		public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
 				throws SlickException {
 			
-			//g.setFont(uFont);
 			g.setColor(Color.darkGray);
 			backGround.draw();
 			g.drawString("You are student in SoftUni.You must go through a lot of difficulties to accomplish", 30, 150);

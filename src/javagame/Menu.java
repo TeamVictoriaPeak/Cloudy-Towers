@@ -59,8 +59,6 @@ public class Menu extends BasicGameState{
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
 			throws SlickException {
 
-		
-		//g.setFont(uFont);
 		g.setColor(Color.darkGray);
 		backGround.draw();
 		logo.draw(10, 30);
@@ -83,7 +81,7 @@ public class Menu extends BasicGameState{
 		// button Play Game
 		if ((posX > 35) && (posX < 75) && ((posY > 220) && (posY < 270 ))){
 			if (Mouse.isButtonDown(0)) {
-				music.stop();
+			//	music.stop();
 				sbg.enterState(1);
 			}
 		}

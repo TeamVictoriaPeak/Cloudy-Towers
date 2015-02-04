@@ -23,16 +23,16 @@ public class Game extends StateBasedGame {
 	}
 	
 	public void initStatesList ( GameContainer gc) throws SlickException {
-		this.getState(menu).init(gc,this);//inicilizaciq
-		this.enterState(menu); // koe sastoqnie da se pokazva v na4aloto
+		this.getState(menu).init(gc,this); //inicilizaciq
+		this.enterState(menu);  // koe sastoqnie da se pokazva v na4aloto
 	}
 	
 	public static void main(String[] args) {
 		AppGameContainer appgc;
 		try{
 			appgc = new AppGameContainer(new Game(gamename));//init na obekta
-			appgc.setDisplayMode(800,600, false);// razmer na ekrana (ako e false ne moje na cql ekran)
-			appgc.start();// startirane
+			appgc.setDisplayMode(800,600, false); // razmer na ekrana (ako e false ne moje na cql ekran)
+			appgc.start(); // startirane
 		}catch(SlickException e){
 			e.printStackTrace();
 		}
