@@ -57,6 +57,8 @@ public class Level_One extends BasicGameState {
 	float meters = 0;
 
 	boolean firstClouds = true;
+	boolean mustDrawCoin = false;
+	boolean mustDrawWings = false;
 
 	boolean isGameWon = false;
 	boolean isGameOver = false;
@@ -419,22 +421,26 @@ public class Level_One extends BasicGameState {
 			
 
 			// Sazdavane na PowerUp-a
-			if (score % 200 == 0 && !isGameWon  && score > 0) {
+			if (mustDrawWings && !isGameWon  && score > 0) {
 				powerUpPositionX = rndGenerator.nextInt(600);
 				powerUpPositionY = rndGenerator.nextInt(400);
-				powerUpList.add(new PowerUp(powerUpPositionX, powerUpPositionY,
+				powerUpList.add(new PowerUp(powerUpPositionX, 0,
 						powerUp));
+				
+				mustDrawWings = false;
 			}
 			if (takenPowerUp()) {
 				normalJumpPower += 50;
 			}
 
 			// Sazdavane na monetkite
-			if (score % 250 == 0 && !isGameWon && score > 0) {
+			if (mustDrawCoin && !isGameWon && score > 0) {
 				coinPositionX = rndGenerator.nextInt(600);
 				coinPositionY = rndGenerator.nextInt(400);
 				bonusList
-						.add(new BonusCoin(coinPositionX, coinPositionY, coin));
+						.add(new BonusCoin(coinPositionX, 0, coin));
+				
+				mustDrawCoin = false;
 			}
 			if (takenBonusCoin()) {
 				score += 50;
@@ -653,9 +659,22 @@ public class Level_One extends BasicGameState {
 	private void cloudMovement() {
 		for (Clouds cloud : staticClouds) {
 			cloud.cloudY += 0.13;
-			meters += 0.0001;
-			score += 0.0001;
+			
 		}
+		
+		
+		for (BonusCoin bonusCoin : bonusList) {
+			bonusCoin.coinY += 0.13;
+		}
+		
+		
+		for (PowerUp powerWings : powerUpList) {
+			powerWings.powerUpY += 0.13;
+		}
+		
+		
+		meters += 0.0015;
+		score += 0.0015;
 	}
 
 	// iztriva oblaci
@@ -806,6 +825,14 @@ public class Level_One extends BasicGameState {
 			jumpPower--;
 			meters++;
 			score++;
+			
+			if ((int)meters % 140 == 0) {
+				mustDrawCoin = true;
+			}
+			
+			if ((int)meters % 200 == 0) {
+				mustDrawWings = true;
+			}
 			
 			for (Clouds cloud : staticClouds) {
 				cloud.cloudY++;
