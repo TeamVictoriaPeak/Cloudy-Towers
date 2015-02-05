@@ -49,9 +49,9 @@ public class Menu extends BasicGameState{
 		pauseMusic = new Image("res/Button-Pause-icon.png");
 		Font font = new Font("Serif",Font.PLAIN,20);
 		uFont = new UnicodeFont(font, font.getSize(),font.isBold(), font.isItalic());
-		music = new Music("res/Happy_Background_Music_-_Sweet_by_Sophonic.wav");
+		music = new Music("res/MenuMusic.ogg");
 		music.setVolume(0.5f);
-		music.play();
+		music.loop();
 		
 	}
 
@@ -68,7 +68,7 @@ public class Menu extends BasicGameState{
 		g.drawString("Instructions",90 , 445);
 		exitGame.draw(30,530);
 		g.drawString("Exit Game",90,545);
-		pauseMusic.draw(700,550);
+		pauseMusic.draw(700,540);
 		
 	}
 

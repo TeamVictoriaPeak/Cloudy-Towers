@@ -77,22 +77,11 @@ public class Level_One extends BasicGameState {
 
 	int cloudsNumber;
 
-	int firstFloorCloudX;
-	int firstFloorCloudY;
 
-	int secondFloorCloudX;
-	int secondFloorCloudY;
-
-	int thirdFloorCloudX;
-	int thirdFloorCloudY;
-
-	int fourthFloorCloudX;
-	int fourthFloorCloudY;
 	Image firstFloorCloud, secondFloorCloud, thirdFloorCloud, fourthFloorCloud,
 			moveCloud, moveCloud2;
 
-	private float moveCloudX = 200;
-	private float moveCloud2Y = 400;
+
 
 	List<PowerUp> powerUpList = new LinkedList<PowerUp>();
 	List<BonusCoin> bonusList = new LinkedList<BonusCoin>();
@@ -202,21 +191,7 @@ public class Level_One extends BasicGameState {
 		int posX = Mouse.getX();
 		int posY = Mouse.getY();
 
-		moveCloudX += 0.04 * g;
 
-		if (moveCloudX > 400 || moveCloudX < 200) {
-			moveCloudX = 200;
-
-		}
-
-		moveCloud2Y -= 0.04 * g;
-
-		if (moveCloud2Y < 200) {
-			moveCloud2Y = 400;
-
-		}
-
-		fourthFloorCloudX += 0.1 * g;
 
 		if (!pressEsc && !isGameOver && !wonScreen) {
 
@@ -227,7 +202,7 @@ public class Level_One extends BasicGameState {
 			}
 
 			// proverqva dali igrata e prevartqna
-			if (meters > 500) {
+			if (meters > 1000) {
 				isGameWon = true;
 			}
 
@@ -243,6 +218,13 @@ public class Level_One extends BasicGameState {
 			}
 
 			heroOnEarth();
+			
+			// Geroq pada zaedno s oblaka, na koito stoi
+			if (onCloud && meters > 20) {
+				heroMovingWhenOnCloud();
+			}
+			
+			
 
 			// Sazdavane na oblacite
 			if (staticClouds.size() < 13 && !isGameWon) {
@@ -324,10 +306,6 @@ public class Level_One extends BasicGameState {
 
 			}
 
-			// Geroq pada zaedno s oblaka, na koito stoi
-			if (onCloud && meters > 20) {
-				charPositionY += 0.13;
-			}
 
 			// Sazdavane na PowerUp-a
 			if (mustDrawWings && !isGameWon && score > 0) {
@@ -558,26 +536,67 @@ public class Level_One extends BasicGameState {
 		}
 	}
 
+	
+	// Izvar6va spuskaneto na geroq, dokato e na oblak
+	private void heroMovingWhenOnCloud() {
+		
+		if (meters <= 600) {
+			charPositionY += 0.13;
+		}
+		
+
+		if (meters > 600 && !isGameWon) {
+			charPositionY += 0.17;
+		}
+		
+		
+	}
+	
+	
+	
 	// Izvar6va spuskaneto na oblacite
 	private void cloudMovement() {
-		for (Clouds cloud : staticClouds) {
-			cloud.cloudY += 0.13;
+		
+		
+		if (meters <= 600) {
+			for (Clouds cloud : staticClouds) {
+				cloud.cloudY += 0.13;
 
+			}
+
+			for (BonusCoin bonusCoin : bonusList) {
+				bonusCoin.coinY += 0.13;
+			}
+
+			for (PowerUp powerWings : powerUpList) {
+				powerWings.powerUpY += 0.13;
+			}
+
+			meters += 0.0015;
+			score += 0.0015;
+		}
+		
+		if (meters > 600 && !isGameWon) {
+			for (Clouds cloud : staticClouds) {
+				cloud.cloudY += 0.17;
+
+			}
+
+			for (BonusCoin bonusCoin : bonusList) {
+				bonusCoin.coinY += 0.17;
+			}
+
+			for (PowerUp powerWings : powerUpList) {
+				powerWings.powerUpY += 0.17;
+			}
+
+			meters += 0.0023;
+			score += 0.0023;
 		}
 
-		for (BonusCoin bonusCoin : bonusList) {
-			bonusCoin.coinY += 0.13;
-		}
-
-		for (PowerUp powerWings : powerUpList) {
-			powerWings.powerUpY += 0.13;
-		}
-
-		meters += 0.0015;
-		score += 0.0015;
 	}
 
-	// iztriva oblaci
+	// iztriva oblacite, koito sa izvan ekrana
 	private void removingClouds() {
 		for (Clouds cloud : staticClouds) {
 
@@ -730,16 +749,24 @@ public class Level_One extends BasicGameState {
 			meters++;
 			score++;
 
-			if ((int) meters % 140 == 0) {
+			if ((int) meters % 120 == 0) {
 				mustDrawCoin = true;
 			}
 
-			if ((int) meters % 200 == 0) {
+			if ((int) meters % 300 == 0 && meters > 0) {
 				mustDrawWings = true;
 			}
 
 			for (Clouds cloud : staticClouds) {
 				cloud.cloudY++;
+			}
+			
+			for (BonusCoin coin : bonusList) {
+				coin.coinY++;
+			}
+			
+			for (PowerUp power : powerUpList) {
+				power.powerUpY++;
 			}
 
 			if (backGroundY < -650 && !isGameWon) {
@@ -774,6 +801,16 @@ public class Level_One extends BasicGameState {
 		if (backGroundY >= 0 && isGameWon) {
 			backGroundY = 0;
 			EarthY = 500;
+		}
+		
+		
+		// proverka za izrisuvane na mometa/krilca
+		if (meters % 60 == 0) {
+			mustDrawCoin = true;
+		}
+
+		if (meters % 200 == 0 && meters > 0) {
+			mustDrawWings = true;
 		}
 
 	}
